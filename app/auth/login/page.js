@@ -1,6 +1,8 @@
 'use client';
 import { useState } from 'react';
 import useAuth from '../../../hooks/useAuth';
+import { useRouter } from 'next/navigation';
+import Logo from '@/public/logo';
 
 export default function Login() {
 	const [email, setEmail] = useState('');
@@ -9,6 +11,7 @@ export default function Login() {
 	const [error, setError] = useState(false);
 	const [message, setMessage] = useState('');
 	const { login } = useAuth();
+	const router = useRouter();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -16,6 +19,7 @@ export default function Login() {
 
 		try {
 			await login({ email, password });
+			router.push('/dashboard');
 		} catch (error) {
 			setError(true);
 			setMessage('Invalid email or password');
@@ -26,11 +30,7 @@ export default function Login() {
 		<>
 			<div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
 				<div className='sm:mx-auto sm:w-full sm:max-w-sm'>
-					<img
-						alt='Your Company'
-						src='https://tailwindui.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600'
-						className='mx-auto h-10 w-auto'
-					/>
+					<Logo />
 					<h2 className='mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900'>
 						Sign in to your account
 					</h2>
@@ -54,7 +54,7 @@ export default function Login() {
 									autoComplete='email'
 									onChange={(e) => setEmail(e.target.value)}
 									value={email}
-									className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6'
+									className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
 								/>
 							</div>
 						</div>
@@ -70,7 +70,7 @@ export default function Login() {
 								<div className='text-sm'>
 									<a
 										href='#'
-										className='font-semibold text-indigo-600 hover:text-indigo-500'
+										className='font-semibold text-blue-500 hover:text-blue-400 hover:text-primary-dark'
 									>
 										Forgot password?
 									</a>
@@ -87,7 +87,7 @@ export default function Login() {
 										setPassword(e.target.value)
 									}
 									value={password}
-									className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6'
+									className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
 								/>
 							</div>
 						</div>
@@ -96,7 +96,7 @@ export default function Login() {
 							<button
 								type='submit'
 								disabled={loading}
-								className='flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+								className='flex w-full justify-center rounded-md bg-blue-500 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-blue-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500'
 							>
 								{loading ? 'Signing in...' : 'Sign in'}
 							</button>
@@ -104,7 +104,7 @@ export default function Login() {
 						<div className='text-xs text-center'>
 							<a
 								href='/auth/register'
-								className='font-semibold text-indigo-600 hover:text-indigo-500'
+								className='font-semibold text-blue-500 hover:text-blue-400'
 							>
 								Don't have an account? Sign up
 							</a>

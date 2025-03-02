@@ -1,15 +1,18 @@
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Roboto, Archivo_Black } from 'next/font/google';
 import './globals.css';
 import { AuthProvider } from '@/context/AuthContext';
 
-const geistSans = Geist({
-	variable: '--font-geist-sans',
+const roboto = Roboto({
+	variable: '--font-roboto',
 	subsets: ['latin'],
+	display: 'swap',
 });
 
-const geistMono = Geist_Mono({
-	variable: '--font-geist-mono',
+const archivoBlack = Archivo_Black({
+	variable: '--font-archivo-black',
 	subsets: ['latin'],
+	display: 'swap',
+	weight: '400',
 });
 
 export const metadata = {
@@ -21,7 +24,7 @@ export default function RootLayout({ children }) {
 	return (
 		<html lang='en'>
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+				className={`${roboto.variable} ${archivoBlack.variable} antialiased`}
 			>
 				<AuthProvider>{children}</AuthProvider>
 			</body>

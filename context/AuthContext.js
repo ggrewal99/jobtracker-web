@@ -11,18 +11,21 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
 	const [user, setUser] = useState(null);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		const storedUser = getUser();
 		if (storedUser) {
 			setUser(storedUser);
 		}
+		setLoading(false);
 	}, []);
 
 	const register = async (userData) => {
 		try {
 			const user = await apiRegister(userData);
 			setUser(user);
+			return user;
 		} catch (error) {
 			throw error;
 		}
@@ -32,6 +35,7 @@ export const AuthProvider = ({ children }) => {
 		try {
 			const userData = await apiLogin(credentials);
 			setUser(userData);
+			return userData;
 		} catch (error) {
 			throw error;
 		}
@@ -43,7 +47,9 @@ export const AuthProvider = ({ children }) => {
 	};
 
 	return (
-		<AuthContext.Provider value={{ user, register, login, logout }}>
+		<AuthContext.Provider
+			value={{ user, register, login, logout, loading }}
+		>
 			{children}
 		</AuthContext.Provider>
 	);

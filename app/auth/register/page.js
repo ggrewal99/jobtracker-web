@@ -1,8 +1,11 @@
 'use client';
 import { useState } from 'react';
 import useAuth from '../../../hooks/useAuth';
+import Logo from '@/public/logo';
 
 export default function Register() {
+	const [firstName, setFirstName] = useState('');
+	const [lastName, setLastName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
@@ -15,8 +18,19 @@ export default function Register() {
 		e.preventDefault();
 		setLoading(true);
 
+		if (password !== confirmPassword) {
+			setError(true);
+			setMessage('Passwords do not match');
+			setLoading(false);
+			return;
+		}
+
 		try {
-			await register({ email, password, confirmPassword });
+			await register({ firstName, lastName, email, password });
+			setError(false);
+			setMessage(
+				'Registration successful. Check your email to verify your account'
+			);
 		} catch (error) {
 			setError(true);
 			setMessage('Registration failed');
@@ -27,11 +41,7 @@ export default function Register() {
 		<>
 			<div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
 				<div className='sm:mx-auto sm:w-full sm:max-w-sm'>
-					<img
-						alt='Your Company'
-						src='https://tailwindui.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600'
-						className='mx-auto h-10 w-auto'
-					/>
+					<Logo />
 					<h2 className='mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900'>
 						Sign up for an account
 					</h2>
@@ -39,6 +49,49 @@ export default function Register() {
 
 				<div className='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'>
 					<form onSubmit={handleSubmit} className='space-y-6'>
+						<div>
+							<label
+								htmlFor='firstName'
+								className='block text-sm/6 font-medium text-gray-900'
+							>
+								First Name
+							</label>
+							<div className='mt-2'>
+								<input
+									id='firstName'
+									name='firstName'
+									type='text'
+									required
+									onChange={(e) =>
+										setFirstName(e.target.value)
+									}
+									value={firstName}
+									className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
+								/>
+							</div>
+						</div>
+
+						<div>
+							<label
+								htmlFor='email'
+								className='block text-sm/6 font-medium text-gray-900'
+							>
+								Last Name (Optional)
+							</label>
+							<div className='mt-2'>
+								<input
+									id='lastName'
+									name='lastName'
+									type='text'
+									onChange={(e) =>
+										setLastName(e.target.value)
+									}
+									value={lastName}
+									className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
+								/>
+							</div>
+						</div>
+
 						<div>
 							<label
 								htmlFor='email'
@@ -55,7 +108,7 @@ export default function Register() {
 									autoComplete='email'
 									onChange={(e) => setEmail(e.target.value)}
 									value={email}
-									className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6'
+									className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
 								/>
 							</div>
 						</div>
@@ -75,12 +128,11 @@ export default function Register() {
 									name='password'
 									type='password'
 									required
-									autoComplete='current-password'
 									onChange={(e) =>
 										setPassword(e.target.value)
 									}
 									value={password}
-									className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6'
+									className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
 								/>
 							</div>
 						</div>
@@ -99,12 +151,11 @@ export default function Register() {
 									name='confirm-password'
 									type='password'
 									required
-									autoComplete='current-password'
 									onChange={(e) =>
 										setConfirmPassword(e.target.value)
 									}
 									value={confirmPassword}
-									className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6'
+									className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
 								/>
 							</div>
 						</div>
@@ -113,7 +164,7 @@ export default function Register() {
 							<button
 								type='submit'
 								disabled={loading}
-								className='flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+								className='flex w-full justify-center rounded-md bg-blue-500 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-blue-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500'
 							>
 								{loading ? 'Signing up...' : 'Sign up'}
 							</button>
@@ -121,15 +172,15 @@ export default function Register() {
 						<div className='text-xs text-center'>
 							<a
 								href='/auth/login'
-								className='font-semibold text-indigo-600 hover:text-indigo-500'
+								className='font-semibold text-blue-500 hover:text-blue-400'
 							>
 								Already have an account? Sign in
 							</a>
 						</div>
 						<div>
 							<p
-								className={`text-sm text-center ${
-									error ? 'text-red-500' : ''
+								className={`text-sm font-semibold text-center ${
+									error ? 'text-red-500' : 'text-green-500'
 								} `}
 							>
 								{message}
