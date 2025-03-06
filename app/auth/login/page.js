@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import useAuth from '../../../hooks/useAuth';
 import { useRouter } from 'next/navigation';
-import Logo from '@/public/logo';
+import Logo from '@/components/logo';
 
 export default function Login() {
 	const [email, setEmail] = useState('');
@@ -19,7 +19,7 @@ export default function Login() {
 
 		try {
 			await login({ email, password });
-			router.push('/dashboard');
+			router.push('/');
 		} catch (error) {
 			setError(true);
 			setMessage('Invalid email or password');

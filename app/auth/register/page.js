@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import useAuth from '../../../hooks/useAuth';
-import Logo from '@/public/logo';
+import Logo from '@/components/logo';
 
 export default function Register() {
 	const [firstName, setFirstName] = useState('');

@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
 	const login = async (credentials) => {
 		try {
 			const userData = await apiLogin(credentials);
-			setUser(userData);
+			setUser(userData.user);
 			return userData;
 		} catch (error) {
 			throw error;
