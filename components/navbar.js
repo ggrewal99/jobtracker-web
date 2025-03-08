@@ -11,12 +11,27 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { PlusIcon } from '@heroicons/react/20/solid';
 import useAuth from '@/hooks/useAuth';
 import Logo from '@/components/logo';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
+import useSidebar from '@/hooks/useSidebar';
+import { useEffect } from 'react';
+import NewJob from './newJob';
 
 export default function Navbar() {
 	const { user, logout } = useAuth();
 	const router = useRouter();
+	const pathname = usePathname();
+	const { setSidebarOpen, setSidebarContent, setSidebarTitle } = useSidebar();
 
+	const links = [
+		{ name: 'Dashboard', href: '/' },
+		{ name: 'My Jobs', href: '/myJobs' },
+	];
+
+	const onNewJobClick = () => {
+		setSidebarTitle('Add New Job');
+		setSidebarContent(<NewJob />);
+		setSidebarOpen(true);
+	};
 	const onSignout = () => {
 		try {
 			logout();
@@ -50,25 +65,27 @@ export default function Navbar() {
 							<Logo />
 						</div>
 						<div className='hidden md:ml-6 md:flex md:space-x-8'>
-							{/* Current: "border-blue-400 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
-							<a
-								href='#'
-								className='inline-flex items-center border-b-2 border-blue-500 px-1 pt-1 text-sm font-medium text-gray-900'
-							>
-								Dashboard
-							</a>
-							<a
-								href='#'
-								className='inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700'
-							>
-								My Jobs
-							</a>
+							{links.map((link) => (
+								<a
+									key={link.name}
+									href={link.href}
+									className={`inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium text-gray-900 
+										${
+											pathname === link.href
+												? 'border-blue-500'
+												: 'border-transparent hover:border-gray-300 hover:text-gray-700'
+										}`}
+								>
+									{link.name}
+								</a>
+							))}
 						</div>
 					</div>
 					<div className='flex items-center'>
 						<div className='shrink-0'>
 							<button
 								type='button'
+								onClick={() => onNewJobClick()}
 								className='relative inline-flex items-center gap-x-1.5 rounded-md bg-blue-500 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-blue-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 hover:cursor-pointer'
 							>
 								<PlusIcon

@@ -3,12 +3,12 @@ export default function Home() {
 		<div>
 			<h1>Welcome to Jobtracker</h1>
 			<div>
-				<a href='/auth/login' className='text-indigo-500'>
+				<a href='/auth/login' className='text-blue-500'>
 					Login
 				</a>
 			</div>
 			<div>
-				<a href='/auth/register' className='text-indigo-500'>
+				<a href='/auth/register' className='text-blue-500'>
 					Register
 				</a>
 			</div>

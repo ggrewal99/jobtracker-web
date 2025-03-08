@@ -6,17 +6,22 @@ import {
 	logout as apiLogout,
 	getUser,
 } from '../lib/auth';
+import { useRouter } from 'next/navigation';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
 	const [user, setUser] = useState(null);
 	const [loading, setLoading] = useState(true);
+	const router = useRouter();
 
 	useEffect(() => {
 		const storedUser = getUser();
 		if (storedUser) {
 			setUser(storedUser);
+		} else {
+			setUser(null);
+			router.push('/auth/login');
 		}
 		setLoading(false);
 	}, []);
