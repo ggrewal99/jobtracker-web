@@ -1,19 +1,23 @@
 const statuses = {
 	pending: {
-		label: 'Pending',
+		displayName: 'Pending',
 		value: 'pending',
+		bgColor: 'bg-orange-600',
 	},
 	inProgress: {
-		label: 'In Progress',
-		value: 'in progress',
+		displayName: 'In Progress',
+		value: 'inProgress',
+		bgColor: 'bg-blue-700',
 	},
 	declined: {
-		label: 'Declined',
+		displayName: 'Declined',
 		value: 'declined',
+		bgColor: 'bg-red-600',
 	},
 	accepted: {
-		label: 'Accepted',
+		displayName: 'Accepted',
 		value: 'accepted',
+		bgColor: 'bg-green-700',
 	},
 };
 

@@ -2,28 +2,60 @@
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import statuses from '@/constants/jobStatus';
 import { useState } from 'react';
-import { addNewJob as apiAddNewJob } from '@/lib/api';
-export default function NewJob() {
-	const [position, setPosition] = useState('');
-	const [company, setCompany] = useState('');
-	const [status, setStatus] = useState('');
-	const [description, setDescription] = useState('');
+import {
+	addNewJob as apiAddNewJob,
+	updateJob as apiUpdateJob,
+} from '@/lib/api';
+import useAlert from '@/hooks/useAlert';
+export default function NewJob({ exisitingJob }) {
+	const [position, setPosition] = useState(exisitingJob?.position || '');
+	const [company, setCompany] = useState(exisitingJob?.company || '');
+	const [status, setStatus] = useState(exisitingJob?.status || 'pending');
+	const [description, setDescription] = useState(
+		exisitingJob?.description || ''
+	);
 	const [loading, setLoading] = useState(false);
+	const { setShowAlert, setAlertMessage, setAlertType } = useAlert();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setLoading(true);
 		try {
-			await apiAddNewJob({
-				position,
-				company,
-				status,
-				description,
-			});
+			if (!exisitingJob) {
+				// Create New Job
+				await apiAddNewJob({
+					position,
+					company,
+					status,
+					description,
+				});
+				setAlertMessage('Job created successfully!');
+			} else {
+				// Update Existing Job
+				await apiUpdateJob(
+					{
+						position,
+						company,
+						status,
+						description,
+					},
+					exisitingJob._id
+				);
+				setAlertMessage('Job updated successfully!');
+			}
+
+			setAlertType('success');
 		} catch (error) {
-			console.error('Job creation failed:', error);
+			console.error('Something went wrong.', error);
+			if (!exisitingJob) {
+				setAlertMessage('Failed to create job.');
+			} else {
+				setAlertMessage('Failed to update job.');
+			}
+			setAlertType('error');
 		}
-		console.log('Form submitted');
+		setShowAlert(true);
+		setLoading(false);
 	};
 	return (
 		<>
@@ -43,6 +75,7 @@ export default function NewJob() {
 									name='position'
 									type='text'
 									required
+									defaultValue={position}
 									onChange={(e) =>
 										setPosition(e.target.value)
 									}
@@ -64,6 +97,7 @@ export default function NewJob() {
 									name='company'
 									type='text'
 									required
+									defaultValue={company}
 									onChange={(e) => setCompany(e.target.value)}
 									className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
 								/>
@@ -80,7 +114,7 @@ export default function NewJob() {
 								<select
 									id='status'
 									name='status'
-									defaultValue='pending'
+									defaultValue={status}
 									onChange={(e) => setStatus(e.target.value)}
 									className='col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
 								>
@@ -89,7 +123,7 @@ export default function NewJob() {
 											key={key}
 											value={statuses[key].value}
 										>
-											{statuses[key].label}
+											{statuses[key].displayName}
 										</option>
 									))}
 								</select>
@@ -111,10 +145,11 @@ export default function NewJob() {
 									id='about'
 									name='about'
 									rows={3}
+									defaultValue={description}
 									onChange={(e) =>
 										setDescription(e.target.value)
 									}
-									className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6'
+									className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
 								/>
 							</div>
 						</div>

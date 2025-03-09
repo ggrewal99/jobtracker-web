@@ -2,6 +2,7 @@ import { Roboto, Archivo_Black } from 'next/font/google';
 import './globals.css';
 import { AuthProvider } from '@/context/AuthContext';
 import { SidebarProvider } from '@/context/SidebarContext';
+import { AlertProvider } from '@/context/AlertContext';
 
 const roboto = Roboto({
 	variable: '--font-roboto',
@@ -29,7 +30,9 @@ export default function RootLayout({ children }) {
 				className={`${roboto.variable} ${archivoBlack.variable} antialiased`}
 			>
 				<AuthProvider>
-					<SidebarProvider>{children}</SidebarProvider>
+					<AlertProvider>
+						<SidebarProvider>{children}</SidebarProvider>
+					</AlertProvider>
 				</AuthProvider>
 			</body>
 		</html>

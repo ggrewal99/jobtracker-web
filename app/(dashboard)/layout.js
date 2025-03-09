@@ -7,6 +7,7 @@ import Navbar from '@/components/navbar';
 import useAuth from '@/hooks/useAuth';
 import Sidebar from '@/components/sidebar';
 import useSidebar from '@/hooks/useSidebar';
+import Alert from '@/components/alert';
 
 export default function DashboardLayout({ children }) {
 	const router = useRouter();
@@ -47,6 +48,7 @@ export default function DashboardLayout({ children }) {
 	return (
 		<>
 			<div className='flex h-full flex-col mx-auto'>
+				<Alert />
 				<Navbar />
 				<Sidebar />
 				<main className='flex-1 p-4'>{children}</main>

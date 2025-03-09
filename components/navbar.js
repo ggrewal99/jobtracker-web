@@ -25,6 +25,7 @@ export default function Navbar() {
 	const links = [
 		{ name: 'Dashboard', href: '/' },
 		{ name: 'My Jobs', href: '/myJobs' },
+		{ name: 'Test Page', href: '/test' },
 	];
 
 	const onNewJobClick = () => {
@@ -61,7 +62,7 @@ export default function Navbar() {
 								/>
 							</DisclosureButton>
 						</div>
-						<div className='flex shrink-0 items-center'>
+						<div className='flex shrink-0 items-center select-none'>
 							<Logo />
 						</div>
 						<div className='hidden md:ml-6 md:flex md:space-x-8'>

@@ -1,11 +1,10 @@
 'use client';
 
-import { useState } from 'react';
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import useSidebar from '@/hooks/useSidebar';
 
-export default function Sidebar({ title }) {
+export default function Sidebar() {
 	const { sidebarOpen, setSidebarOpen, sidebarContent, sidebarTitle } =
 		useSidebar();
 
@@ -36,7 +35,7 @@ export default function Sidebar({ title }) {
 												onClick={() =>
 													setSidebarOpen(false)
 												}
-												className='relative rounded-md bg-white text-gray-400 hover:text-gray-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden'
+												className='relative rounded-md bg-white text-gray-400 hover:text-gray-500 focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:outline-hidden'
 											>
 												<span className='absolute -inset-2.5' />
 												<span className='sr-only'>
