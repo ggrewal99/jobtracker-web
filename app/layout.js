@@ -3,6 +3,7 @@ import './globals.css';
 import { AuthProvider } from '@/context/AuthContext';
 import { SidebarProvider } from '@/context/SidebarContext';
 import { AlertProvider } from '@/context/AlertContext';
+import { ModalProvider } from '@/context/ModalContext';
 
 const roboto = Roboto({
 	variable: '--font-roboto',
@@ -30,9 +31,11 @@ export default function RootLayout({ children }) {
 				className={`${roboto.variable} ${archivoBlack.variable} antialiased`}
 			>
 				<AuthProvider>
-					<AlertProvider>
-						<SidebarProvider>{children}</SidebarProvider>
-					</AlertProvider>
+					<ModalProvider>
+						<AlertProvider>
+							<SidebarProvider>{children}</SidebarProvider>
+						</AlertProvider>
+					</ModalProvider>
 				</AuthProvider>
 			</body>
 		</html>

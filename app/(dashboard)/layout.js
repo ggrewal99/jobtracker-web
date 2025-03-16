@@ -8,12 +8,12 @@ import useAuth from '@/hooks/useAuth';
 import Sidebar from '@/components/sidebar';
 import useSidebar from '@/hooks/useSidebar';
 import Alert from '@/components/alert';
+import Modal from '@/components/modal';
 
 export default function DashboardLayout({ children }) {
 	const router = useRouter();
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const { user, loading } = useAuth();
-	const { SidebarOpen } = useSidebar();
 
 	useEffect(
 		() => {
@@ -48,6 +48,7 @@ export default function DashboardLayout({ children }) {
 	return (
 		<>
 			<div className='flex h-full flex-col mx-auto'>
+				<Modal />
 				<Alert />
 				<Navbar />
 				<Sidebar />

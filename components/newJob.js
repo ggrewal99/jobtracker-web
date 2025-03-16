@@ -5,8 +5,11 @@ import { useState } from 'react';
 import {
 	addNewJob as apiAddNewJob,
 	updateJob as apiUpdateJob,
+	deleteJob as apiDeleteJob,
 } from '@/lib/api';
 import useAlert from '@/hooks/useAlert';
+import useSidebar from '@/hooks/useSidebar';
+import useModal from '@/hooks/useModal';
 export default function NewJob({ exisitingJob }) {
 	const [position, setPosition] = useState(exisitingJob?.position || '');
 	const [company, setCompany] = useState(exisitingJob?.company || '');
@@ -14,8 +17,33 @@ export default function NewJob({ exisitingJob }) {
 	const [description, setDescription] = useState(
 		exisitingJob?.description || ''
 	);
+	const { setSidebarOpen } = useSidebar();
 	const [loading, setLoading] = useState(false);
 	const { setShowAlert, setAlertMessage, setAlertType } = useAlert();
+	const { setShowModal, setModalContent } = useModal();
+
+	const handleDelete = async () => {
+		setShowModal(true);
+		setModalContent({
+			title: 'Delete Job',
+			message: 'Are you sure you want to delete this job?',
+			btnText: 'Delete Job',
+			onConfirm: async () => {
+				try {
+					await apiDeleteJob(exisitingJob._id);
+					setAlertMessage('Job deleted successfully!');
+					setAlertType('success');
+					setShowAlert(true);
+					setSidebarOpen(false);
+				} catch (error) {
+					console.error('Something went wrong.', error);
+					setAlertMessage('Failed to delete job.');
+					setAlertType('error');
+					setShowAlert(true);
+				}
+			},
+		});
+	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -155,20 +183,34 @@ export default function NewJob({ exisitingJob }) {
 						</div>
 					</div>
 				</div>
-				<div className='mt-6 flex items-center justify-end gap-x-6'>
-					<button
-						type='button'
-						className='text-sm/6 font-semibold text-gray-900 cursor-pointer'
-					>
-						Cancel
-					</button>
-					<button
-						type='submit'
-						disabled={loading}
-						className='rounded-md cursor-pointer bg-blue-500 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-blue-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500'
-					>
-						{loading ? 'Loading...' : 'Save'}
-					</button>
+				<div className='mt-6 flex items-center justify-between gap-x-6'>
+					<div>
+						{exisitingJob && (
+							<button
+								type='button'
+								className='rounded-md text-sm/6 font-semibold bg-red-700 text-white px-3 py-2 hover:bg-red-600 cursor-pointer'
+								onClick={handleDelete}
+							>
+								Delete
+							</button>
+						)}
+					</div>
+					<div>
+						<button
+							type='button'
+							className='text-sm/6 font-semibold text-gray-900 cursor-pointer mr-5'
+							onClick={() => setSidebarOpen(false)}
+						>
+							Cancel
+						</button>
+						<button
+							type='submit'
+							disabled={loading}
+							className='rounded-md cursor-pointer bg-blue-500 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-blue-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500'
+						>
+							{loading ? 'Loading...' : 'Save'}
+						</button>
+					</div>
 				</div>
 			</form>
 		</>
