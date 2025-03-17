@@ -10,6 +10,7 @@ import {
 import useAlert from '@/hooks/useAlert';
 import useSidebar from '@/hooks/useSidebar';
 import useModal from '@/hooks/useModal';
+import useJobs from '@/hooks/useJobs';
 export default function NewJob({ exisitingJob }) {
 	const [position, setPosition] = useState(exisitingJob?.position || '');
 	const [company, setCompany] = useState(exisitingJob?.company || '');
@@ -21,6 +22,7 @@ export default function NewJob({ exisitingJob }) {
 	const [loading, setLoading] = useState(false);
 	const { setShowAlert, setAlertMessage, setAlertType } = useAlert();
 	const { setShowModal, setModalContent } = useModal();
+	const { addJob, updateJob, removeJob } = useJobs();
 
 	const handleDelete = async () => {
 		setShowModal(true);
@@ -33,6 +35,7 @@ export default function NewJob({ exisitingJob }) {
 					await apiDeleteJob(exisitingJob._id);
 					setAlertMessage('Job deleted successfully!');
 					setAlertType('success');
+					removeJob(exisitingJob._id);
 					setShowAlert(true);
 					setSidebarOpen(false);
 				} catch (error) {
@@ -57,6 +60,12 @@ export default function NewJob({ exisitingJob }) {
 					status,
 					description,
 				});
+				addJob({
+					position,
+					company,
+					status,
+					description,
+				});
 				setAlertMessage('Job created successfully!');
 			} else {
 				// Update Existing Job
@@ -69,6 +78,13 @@ export default function NewJob({ exisitingJob }) {
 					},
 					exisitingJob._id
 				);
+				updateJob({
+					position,
+					company,
+					status,
+					description,
+					_id: exisitingJob._id,
+				});
 				setAlertMessage('Job updated successfully!');
 			}
 

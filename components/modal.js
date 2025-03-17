@@ -10,8 +10,7 @@ import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import useModal from '@/hooks/useModal';
 
 export default function Modal() {
-	const { showModal, setShowModal, modalContent, setModalContent } =
-		useModal();
+	const { showModal, setShowModal, modalContent } = useModal();
 
 	return (
 		<Dialog

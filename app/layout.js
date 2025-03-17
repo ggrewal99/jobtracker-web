@@ -4,6 +4,7 @@ import { AuthProvider } from '@/context/AuthContext';
 import { SidebarProvider } from '@/context/SidebarContext';
 import { AlertProvider } from '@/context/AlertContext';
 import { ModalProvider } from '@/context/ModalContext';
+import { JobsProvider } from '@/context/JobsContext';
 
 const roboto = Roboto({
 	variable: '--font-roboto',
@@ -31,11 +32,13 @@ export default function RootLayout({ children }) {
 				className={`${roboto.variable} ${archivoBlack.variable} antialiased`}
 			>
 				<AuthProvider>
-					<ModalProvider>
-						<AlertProvider>
-							<SidebarProvider>{children}</SidebarProvider>
-						</AlertProvider>
-					</ModalProvider>
+					<JobsProvider>
+						<ModalProvider>
+							<AlertProvider>
+								<SidebarProvider>{children}</SidebarProvider>
+							</AlertProvider>
+						</ModalProvider>
+					</JobsProvider>
 				</AuthProvider>
 			</body>
 		</html>

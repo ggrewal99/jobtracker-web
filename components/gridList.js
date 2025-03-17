@@ -4,6 +4,9 @@ import NewJob from '@/components/newJob';
 
 export default function GridList({ jobs }) {
 	const { setSidebarOpen, setSidebarContent, setSidebarTitle } = useSidebar();
+
+	console.log(jobs);
+
 	const handleJobClick = (job) => {
 		setSidebarOpen(true);
 		setSidebarTitle('Edit Job');
