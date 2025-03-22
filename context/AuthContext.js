@@ -5,6 +5,7 @@ import {
 	login as apiLogin,
 	logout as apiLogout,
 	getUser,
+	updateUser as apiUpdateUser,
 } from '../lib/auth';
 import { useRouter } from 'next/navigation';
 
@@ -50,6 +51,17 @@ export const AuthProvider = ({ children }) => {
 		apiLogout();
 		setUser(null);
 	};
+
+	// const updateUser = async (userData) => {
+	// 	try {
+	// 		const response = await apiUpdateUser(userData);
+	// 		if (response.ok) {
+	// 			setUser(userData);
+	// 		}
+	// 	} catch (error) {
+	// 		throw error;
+	// 	}
+	// };
 
 	return (
 		<AuthContext.Provider

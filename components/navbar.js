@@ -35,8 +35,8 @@ export default function Navbar() {
 	};
 	const onSignout = () => {
 		try {
-			logout();
 			router.push('/auth/login');
+			logout();
 		} catch (error) {
 			console.error(error);
 		}

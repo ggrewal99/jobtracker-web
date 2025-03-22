@@ -69,7 +69,7 @@ export default function Login() {
 								</label>
 								<div className='text-sm'>
 									<a
-										href='#'
+										href='/reset-password'
 										className='font-semibold text-blue-500 hover:text-blue-400 hover:text-primary-dark'
 									>
 										Forgot password?

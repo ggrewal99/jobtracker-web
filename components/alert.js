@@ -34,7 +34,9 @@ export default function Alert() {
 									</div>
 									<div className='ml-3 w-0 flex-1 pt-0.5'>
 										<p className='text-sm font-medium text-gray-900'>
-											Successfully saved!
+											{alertType === 'success'
+												? 'Successfully saved!'
+												: 'Error'}
 										</p>
 										<p className='mt-1 text-sm text-gray-500'>
 											{alertMessage}
