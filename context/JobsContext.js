@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, use } from 'react';
 import { getJobs as apiGetJobs } from '@/lib/api';
 
 const JobsContext = createContext();
@@ -9,6 +9,9 @@ export const JobsProvider = ({ children }) => {
 	const [jobs, setJobs] = useState([]);
 
 	useEffect(() => {
+		if (!localStorage.getItem('token')) {
+			return;
+		}
 		const getJobs = async () => {
 			try {
 				const data = await apiGetJobs();

@@ -2,37 +2,27 @@
 import { useState } from 'react';
 import Logo from '@/components/logo';
 import useAuth from '@/hooks/useAuth';
-import { useSearchParams } from 'next/navigation';
 
 export default function Page() {
-	const [newPassword, setNewPassword] = useState('');
-	const [confirmPassword, setConfirmPassword] = useState('');
+	const [email, setEmail] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(false);
 	const [message, setMessage] = useState('');
-	const searchParams = useSearchParams();
-	const resetToken = searchParams.get('token');
-	const { resetPassword } = useAuth();
+	const { requestPasswordReset } = useAuth();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setLoading(true);
-		setError(false);
-		setMessage('');
-
-		if (newPassword !== confirmPassword) {
-			setError(true);
-			setMessage('Passwords do not match');
-			return;
-		}
 
 		try {
-			await resetPassword(resetToken, newPassword);
-			setMessage('Password reset successful.');
+			const response = await requestPasswordReset(email);
+			setMessage(response.message);
+			setError(false);
 		} catch (error) {
+			setMessage(error.message);
 			setError(true);
-			setMessage('Password reset failed');
 		}
+
 		setLoading(false);
 	};
 	return (
@@ -41,7 +31,7 @@ export default function Page() {
 				<div className='sm:mx-auto sm:w-full sm:max-w-sm'>
 					<Logo />
 					<h2 className='mt-10 text-center text- font-bold tracking-tight text-gray-900'>
-						Reset Password
+						Send Password Reset Email
 					</h2>
 				</div>
 
@@ -50,45 +40,20 @@ export default function Page() {
 						<div>
 							<div className='flex items-center justify-between'>
 								<label
-									htmlFor='new-password'
+									htmlFor='email'
 									className='block text-sm/6 font-medium text-gray-900'
 								>
-									New Password
+									Email
 								</label>
 							</div>
 							<div className='mt-2'>
 								<input
-									id='new-password'
-									name='new-password'
-									type='password'
+									id='email'
+									name='email'
+									type='email'
 									required
-									onChange={(e) =>
-										setNewPassword(e.target.value)
-									}
-									value={newPassword}
-									className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
-								/>
-							</div>
-						</div>
-						<div>
-							<div className='flex items-center justify-between'>
-								<label
-									htmlFor='password'
-									className='block text-sm/6 font-medium text-gray-900'
-								>
-									Confirm Password
-								</label>
-							</div>
-							<div className='mt-2'>
-								<input
-									id='confirm-password'
-									name='confirm-password'
-									type='password'
-									required
-									onChange={(e) =>
-										setConfirmPassword(e.target.value)
-									}
-									value={confirmPassword}
+									onChange={(e) => setEmail(e.target.value)}
+									value={email}
 									className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
 								/>
 							</div>
@@ -100,14 +65,18 @@ export default function Page() {
 								disabled={loading}
 								className='flex w-full justify-center rounded-md bg-blue-500 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-blue-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 cursor-pointer'
 							>
-								{loading ? 'Loading...' : 'Reset Password'}
+								{loading
+									? 'Loading...'
+									: 'Send Password Reset Email'}
 							</button>
 						</div>
 
 						<div>
 							<p
 								className={`text-sm text-center ${
-									error ? 'text-red-500' : ''
+									error
+										? 'text-red-500'
+										: 'text-blue-500 font-bold'
 								} `}
 							>
 								{message}
