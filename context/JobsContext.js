@@ -7,19 +7,31 @@ const JobsContext = createContext();
 
 export const JobsProvider = ({ children }) => {
 	const [jobs, setJobs] = useState([]);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		if (!localStorage.getItem('token')) {
+		setLoading(true);
+		const token =
+			typeof window !== 'undefined'
+				? localStorage.getItem('token')
+				: null;
+
+		if (!token) {
+			setLoading(false);
 			return;
 		}
+
 		const getJobs = async () => {
 			try {
 				const data = await apiGetJobs();
 				setJobs(data);
 			} catch (error) {
 				console.error('Failed to fetch jobs:', error);
+			} finally {
+				setLoading(false);
 			}
 		};
+
 		getJobs();
 	}, []);
 
@@ -40,7 +52,9 @@ export const JobsProvider = ({ children }) => {
 	};
 
 	return (
-		<JobsContext.Provider value={{ jobs, addJob, removeJob, updateJob }}>
+		<JobsContext.Provider
+			value={{ jobs, addJob, removeJob, updateJob, loading }}
+		>
 			{children}
 		</JobsContext.Provider>
 	);
