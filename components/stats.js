@@ -1,15 +1,17 @@
 'use client';
-import useJobs from '@/hooks/useJobs';
 
-function classNames(...classes) {
-	return classes.filter(Boolean).join(' ');
-}
+import { Loading } from './loading';
 
 export default function Stats({ stats }) {
 	return (
 		<>
 			<h1 className='text-2xl'>Overview</h1>
 			<dl className='mx-auto grid grid-cols-1 gap-px bg-gray-900/5 sm:grid-cols-2 lg:grid-cols-5'>
+				{stats.length === 0 && (
+					<div className='col-span-full flex justify-center items-center py-10'>
+						<Loading />
+					</div>
+				)}
 				{stats.map((stat) => (
 					<div
 						key={stat.name}

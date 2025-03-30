@@ -1,6 +1,7 @@
 'use client';
 import useJobs from '@/hooks/useJobs';
 import statuses from '@/constants/jobStatus';
+import { Loading } from './loading';
 
 export default function RecentCard() {
 	const { jobs, jobsLoading } = useJobs();
@@ -54,7 +55,7 @@ export default function RecentCard() {
 								</tr>
 							</thead>
 
-							{!jobsLoading && (
+							{recentJobs ? (
 								<tbody className='divide-y divide-gray-200'>
 									{recentJobs.length === 0 ? (
 										<tr>
@@ -89,6 +90,8 @@ export default function RecentCard() {
 										))
 									)}
 								</tbody>
+							) : (
+								<Loading />
 							)}
 						</table>
 					</div>
