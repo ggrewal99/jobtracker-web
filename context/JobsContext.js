@@ -1,39 +1,34 @@
 'use client';
 
-import { createContext, useState, useEffect, use } from 'react';
+import { createContext, useState, useEffect } from 'react';
 import { getJobs as apiGetJobs } from '@/lib/api';
+import useAuth from '@/hooks/useAuth';
 
 const JobsContext = createContext();
 
 export const JobsProvider = ({ children }) => {
 	const [jobs, setJobs] = useState([]);
-	const [loading, setLoading] = useState(true);
+	const [jobsLoading, setJobsLoading] = useState(true);
+	const { user, userLoading } = useAuth();
+
+	const getJobs = async () => {
+		try {
+			const data = await apiGetJobs();
+			setJobs(data);
+		} catch (error) {
+			console.error('Failed to fetch jobs:', error);
+		} finally {
+			setJobsLoading(false);
+		}
+	};
 
 	useEffect(() => {
-		setLoading(true);
-		const token =
-			typeof window !== 'undefined'
-				? localStorage.getItem('token')
-				: null;
-
-		if (!token) {
-			setLoading(false);
-			return;
+		if (!userLoading && user) {
+			getJobs();
+		} else {
+			setJobsLoading(false);
 		}
-
-		const getJobs = async () => {
-			try {
-				const data = await apiGetJobs();
-				setJobs(data);
-			} catch (error) {
-				console.error('Failed to fetch jobs:', error);
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		getJobs();
-	}, []);
+	}, [user, userLoading]);
 
 	const addJob = (newJob) => {
 		setJobs((prevJobs) => [...prevJobs, newJob]);
@@ -53,7 +48,7 @@ export const JobsProvider = ({ children }) => {
 
 	return (
 		<JobsContext.Provider
-			value={{ jobs, addJob, removeJob, updateJob, loading }}
+			value={{ jobs, getJobs, addJob, removeJob, updateJob, jobsLoading }}
 		>
 			{children}
 		</JobsContext.Provider>

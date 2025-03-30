@@ -5,59 +5,65 @@ import RecentCard from '@/components/recentCard';
 import Stats from '@/components/stats';
 import useAuth from '@/hooks/useAuth';
 import useJobs from '@/hooks/useJobs';
+import { useEffect, useState } from 'react';
 
 export default function Dashboard() {
-	const { user } = useAuth();
-	const { jobs, loading } = useJobs();
-	const totalJobs = jobs.length;
-	const totalPending = jobs.filter((job) => job.status === 'pending').length;
-	const totalInProgress = jobs.filter(
-		(job) => job.status === 'inProgress'
-	).length;
-	const totalAccepted = jobs.filter(
-		(job) => job.status === 'accepted'
-	).length;
-	const totalRejected = jobs.filter(
-		(job) => job.status === 'rejected'
-	).length;
+	const { user, userLoading } = useAuth();
+	const { jobs, jobsLoading } = useJobs();
+	const [jobCounts, setJobCounts] = useState({
+		pending: 0,
+		inProgress: 0,
+		accepted: 0,
+		rejected: 0,
+	});
+	const [stats, setStats] = useState([]);
 
-	const jobCounts = {
-		pending: totalPending,
-		inProgress: totalInProgress,
-		accepted: totalAccepted,
-		rejected: totalRejected,
-	};
+	useEffect(() => {
+		if (jobs && jobs.length > 0) {
+			const pending = jobs.filter(
+				(job) => job.status === 'pending'
+			).length;
+			const inProgress = jobs.filter(
+				(job) => job.status === 'inProgress'
+			).length;
+			const accepted = jobs.filter(
+				(job) => job.status === 'accepted'
+			).length;
+			const rejected = jobs.filter(
+				(job) => job.status === 'rejected'
+			).length;
 
-	const stats = [
-		{
-			name: 'Total jobs',
-			value: jobs.length,
-		},
-		{
-			name: 'Pending',
-			value: totalPending,
-		},
-		{
-			name: 'In Progress',
-			value: totalInProgress,
-		},
-		{
-			name: 'Rejected',
-			value: totalRejected,
-		},
-		{
-			name: 'Accepted',
-			value: totalAccepted,
-		},
-	];
+			console.log('stats', {
+				pending,
+				inProgress,
+				accepted,
+				rejected,
+			});
+
+			setJobCounts({
+				pending,
+				inProgress,
+				accepted,
+				rejected,
+			});
+
+			setStats([
+				{ name: 'Total jobs', value: jobs.length },
+				{ name: 'Pending', value: pending },
+				{ name: 'In Progress', value: inProgress },
+				{ name: 'Rejected', value: rejected },
+				{ name: 'Accepted', value: accepted },
+			]);
+		}
+	}, [jobs]);
 
 	return (
 		<>
 			<div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 mx-auto max-w-7xl'>
 				<h2 className='text-left text-xl font-semibold tracking-tight text-gray-900'>
-					{user ? `Welcome, ${user.firstName}` : ``}
+					{!userLoading ? `Welcome, ${user?.firstName}` : ``}
 				</h2>
-				{loading ? (
+				{!jobs ? (
 					<div className='flex items-center justify-center h-screen'>
 						<svg
 							className='animate-spin h-10 w-10 text-gray-500'

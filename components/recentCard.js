@@ -3,7 +3,7 @@ import useJobs from '@/hooks/useJobs';
 import statuses from '@/constants/jobStatus';
 
 export default function RecentCard() {
-	const { jobs } = useJobs();
+	const { jobs, jobsLoading } = useJobs();
 	const recentJobs = jobs.filter((job) => {
 		const date = new Date(job.createdAt);
 		const today = new Date();
@@ -53,40 +53,43 @@ export default function RecentCard() {
 									</th>
 								</tr>
 							</thead>
-							<tbody className='divide-y divide-gray-200'>
-								{recentJobs.length === 0 ? (
-									<tr>
-										<td
-											colSpan={4}
-											className='text-center py-4 text-sm text-gray-500'
-										>
-											No Jobs added in the past 7 days
-										</td>
-									</tr>
-								) : (
-									recentJobs.map((job) => (
-										<tr key={job._id}>
-											<td className='whitespace-nowrap py-4 pr-3 pl-4 text-sm font-medium text-gray-900 sm:pl-0'>
-												{job.company}
-											</td>
-											<td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-												{job.position}
-											</td>
-											<td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-												{
-													statuses[job.status]
-														.displayName
-												}
-											</td>
-											<td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-												{new Date(
-													job.createdAt
-												).toLocaleDateString()}
+
+							{!jobsLoading && (
+								<tbody className='divide-y divide-gray-200'>
+									{recentJobs.length === 0 ? (
+										<tr>
+											<td
+												colSpan={4}
+												className='text-center py-4 text-sm text-gray-500'
+											>
+												No Jobs added in the past 7 days
 											</td>
 										</tr>
-									))
-								)}
-							</tbody>
+									) : (
+										recentJobs.map((job) => (
+											<tr key={job._id}>
+												<td className='whitespace-nowrap py-4 pr-3 pl-4 text-sm font-medium text-gray-900 sm:pl-0'>
+													{job.company}
+												</td>
+												<td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+													{job.position}
+												</td>
+												<td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+													{
+														statuses[job.status]
+															.displayName
+													}
+												</td>
+												<td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+													{new Date(
+														job.createdAt
+													).toLocaleDateString()}
+												</td>
+											</tr>
+										))
+									)}
+								</tbody>
+							)}
 						</table>
 					</div>
 				</div>
