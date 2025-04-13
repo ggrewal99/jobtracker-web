@@ -1,13 +1,13 @@
 'use client';
 import useAuth from '@/hooks/useAuth';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useAlert from '@/hooks/useAlert';
 import { changePassword as apiChangePassword } from '@/lib/auth';
 export default function Page() {
 	const { user } = useAuth();
-	const [firstName, setFirstName] = useState(user?.firstName);
-	const [lastName, setLastName] = useState(user?.lastName);
-	const [email, setEmail] = useState(user?.email);
+	const [firstName, setFirstName] = useState('');
+	const [lastName, setLastName] = useState('');
+	const [email, setEmail] = useState('');
 	const [currentPassword, setCurrentPassword] = useState('');
 	const [newPassword, setNewPassword] = useState('');
 	const [confirmNewPassword, setConfirmNewPassword] = useState('');
@@ -17,6 +17,14 @@ export default function Page() {
 	const [profileErrorMessage, setProfileErrorMessage] = useState(false);
 	const [passwordErrorMessage, setPasswordErrorMessage] = useState(false);
 	const { updateUser } = useAuth();
+
+	useEffect(() => {
+		if (user) {
+			setFirstName(user.firstName);
+			setLastName(user.lastName);
+			setEmail(user.email);
+		}
+	}, [user]);
 
 	const handleChangePassword = async (e) => {
 		e.preventDefault();

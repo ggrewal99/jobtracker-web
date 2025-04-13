@@ -2,6 +2,7 @@
 
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import statuses from '@/constants/jobStatus';
 
 // Register necessary components
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -9,23 +10,15 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 export default function PieChart({ jobCounts }) {
 	// Convert jobCounts object into Chart.js format
 	const data = {
-		labels: Object.keys(jobCounts),
+		labels: Object.keys(jobCounts).map((key) => statuses[key].displayName),
 		datasets: [
 			{
 				data: Object.values(jobCounts),
 				backgroundColor: [
-					'#ff6384',
-					'#36a2eb',
-					'#ffce56',
-					'#4bc0c0',
-					'#9966ff',
-				],
-				hoverBackgroundColor: [
-					'#ff4c74',
-					'#2496d8',
-					'#fcca40',
-					'#3caea3',
-					'#7d5fff',
+					statuses.pending.hexColor,
+					statuses.inProgress.hexColor,
+					statuses.accepted.hexColor,
+					statuses.rejected.hexColor,
 				],
 			},
 		],
