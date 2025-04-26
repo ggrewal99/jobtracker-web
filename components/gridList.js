@@ -31,13 +31,9 @@ export default function GridList({ jobs: allJobs }) {
 
 	return (
 		<div className='space-y-6'>
-			{allJobs.length === 0 ? (
+			{allJobs.length === 0 ?? (
 				<div className='flex items-center justify-center'>
 					<p className='text-gray-500'>No jobs yet</p>
-				</div>
-			) : (
-				<div className='flex items-center justify-center h-screen'>
-					<Loading />
 				</div>
 			)}
 			<div className='grid grid-cols-1 gap-4 sm:grid-cols-3 cursor-pointer'>

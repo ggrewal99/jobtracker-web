@@ -14,10 +14,10 @@ import useJobs from '@/hooks/useJobs';
 export default function NewJob({ exisitingJob }) {
 	const [position, setPosition] = useState(exisitingJob?.position || '');
 	const [company, setCompany] = useState(exisitingJob?.company || '');
-	const [status, setStatus] = useState(exisitingJob?.status || 'pending');
-	const [description, setDescription] = useState(
-		exisitingJob?.description || ''
+	const [status, setStatus] = useState(
+		exisitingJob?.status || Object.keys(statuses)[0]
 	);
+	const [notes, setNotes] = useState(exisitingJob?.notes || '');
 	const { setSidebarOpen } = useSidebar();
 	const [loading, setLoading] = useState(false);
 	const { setShowAlert, setAlertMessage, setAlertType } = useAlert();
@@ -58,13 +58,13 @@ export default function NewJob({ exisitingJob }) {
 					position,
 					company,
 					status,
-					description,
+					notes,
 				});
 				addJob({
 					position,
 					company,
 					status,
-					description,
+					notes,
 				});
 				setAlertMessage('Job created successfully!');
 			} else {
@@ -74,7 +74,7 @@ export default function NewJob({ exisitingJob }) {
 						position,
 						company,
 						status,
-						description,
+						notes,
 					},
 					exisitingJob._id
 				);
@@ -82,7 +82,7 @@ export default function NewJob({ exisitingJob }) {
 					position,
 					company,
 					status,
-					description,
+					notes,
 					_id: exisitingJob._id,
 				});
 				setAlertMessage('Job updated successfully!');
@@ -182,17 +182,15 @@ export default function NewJob({ exisitingJob }) {
 								htmlFor='about'
 								className='block text-sm/6 font-medium text-gray-900'
 							>
-								Description
+								Notes
 							</label>
 							<div className='mt-2'>
 								<textarea
 									id='about'
 									name='about'
 									rows={3}
-									defaultValue={description}
-									onChange={(e) =>
-										setDescription(e.target.value)
-									}
+									defaultValue={notes}
+									onChange={(e) => setNotes(e.target.value)}
 									className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
 								/>
 							</div>
