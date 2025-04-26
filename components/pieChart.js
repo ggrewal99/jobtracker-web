@@ -14,12 +14,9 @@ export default function PieChart({ jobCounts }) {
 		datasets: [
 			{
 				data: Object.values(jobCounts),
-				backgroundColor: [
-					statuses.pending.hexColor,
-					statuses.inProgress.hexColor,
-					statuses.accepted.hexColor,
-					statuses.rejected.hexColor,
-				],
+				backgroundColor: Object.keys(jobCounts).map(
+					(key) => statuses[key].hexColor
+				),
 			},
 		],
 	};
@@ -29,10 +26,20 @@ export default function PieChart({ jobCounts }) {
 		maintainAspectRatio: false,
 	};
 
+	console.log('jobCounts', jobCounts);
+
 	return (
 		<div className='w-full h-[300px]'>
 			<h1 className='text-2xl'>Visiual Breakdown</h1>
-			<Pie data={data} options={options} />
+			{Object.entries(jobCounts).every(([key, value]) => value === 0) ? (
+				<div className='lg:mt-3 sm:mt-2'>
+					<h1 className='text-gray-500 text-sm'>
+						Add more Jobs to see data here.
+					</h1>
+				</div>
+			) : (
+				<Pie data={data} options={options} />
+			)}
 		</div>
 	);
 }

@@ -6,54 +6,78 @@ import Stats from '@/components/stats';
 import useAuth from '@/hooks/useAuth';
 import useJobs from '@/hooks/useJobs';
 import { useEffect, useState } from 'react';
+import statuses from '@/constants/jobStatus';
 
 export default function Dashboard() {
 	const { user, userLoading } = useAuth();
 	const { jobs, jobsLoading } = useJobs();
-	const [jobCounts, setJobCounts] = useState({
-		pending: 0,
-		inProgress: 0,
-		accepted: 0,
-		rejected: 0,
-	});
+	const initialJobCounts = Object.keys(statuses).reduce((acc, key) => {
+		acc[key] = 0;
+		return acc;
+	}, {});
+
+	const [jobCounts, setJobCounts] = useState(initialJobCounts);
 	const [stats, setStats] = useState([]);
+
+	// useEffect(() => {
+	// 	if (jobs && jobs.length > 0) {
+	// 		const pending = jobs.filter(
+	// 			(job) => job.status === 'applied'
+	// 		).length;
+	// 		const inProgress = jobs.filter(
+	// 			(job) => job.status === 'interviewing'
+	// 		).length;
+	// 		const accepted = jobs.filter(
+	// 			(job) => job.status === 'offer'
+	// 		).length;
+	// 		const rejected = jobs.filter(
+	// 			(job) => job.status === 'rejected'
+	// 		).length;
+
+	// 		console.log('stats', {
+	// 			pending,
+	// 			inProgress,
+	// 			accepted,
+	// 			rejected,
+	// 		});
+
+	// 		setJobCounts({
+	// 			pending,
+	// 			inProgress,
+	// 			accepted,
+	// 			rejected,
+	// 		});
+
+	// 		setStats([
+	// 			{ name: 'Total jobs', value: jobs.length },
+	// 			{ name: 'Pending', value: pending },
+	// 			{ name: 'In Progress', value: inProgress },
+	// 			{ name: 'Rejected', value: rejected },
+	// 			{ name: 'Accepted', value: accepted },
+	// 		]);
+	// 	}
+	// }, [jobs]);
 
 	useEffect(() => {
 		if (jobs && jobs.length > 0) {
-			const pending = jobs.filter(
-				(job) => job.status === 'pending'
-			).length;
-			const inProgress = jobs.filter(
-				(job) => job.status === 'inProgress'
-			).length;
-			const accepted = jobs.filter(
-				(job) => job.status === 'accepted'
-			).length;
-			const rejected = jobs.filter(
-				(job) => job.status === 'rejected'
-			).length;
+			const newJobCounts = {};
+			for (const key in statuses) {
+				newJobCounts[key] = jobs.filter(
+					(job) => job.status === key
+				).length;
+			}
 
-			console.log('stats', {
-				pending,
-				inProgress,
-				accepted,
-				rejected,
-			});
+			setJobCounts(newJobCounts);
 
-			setJobCounts({
-				pending,
-				inProgress,
-				accepted,
-				rejected,
-			});
-
-			setStats([
+			const newStats = [
 				{ name: 'Total jobs', value: jobs.length },
-				{ name: 'Pending', value: pending },
-				{ name: 'In Progress', value: inProgress },
-				{ name: 'Rejected', value: rejected },
-				{ name: 'Accepted', value: accepted },
-			]);
+				...Object.keys(statuses).map((key) => ({
+					name: statuses[key].displayName,
+					value: newJobCounts[key],
+				})),
+			];
+
+			setStats(newStats);
 		}
 	}, [jobs]);
 
@@ -63,7 +87,7 @@ export default function Dashboard() {
 				<h2 className='text-left text-xl font-semibold tracking-tight text-gray-900'>
 					{!userLoading ? `Welcome, ${user?.firstName}` : ``}
 				</h2>
-				{!jobs ? (
+				{jobsLoading ? (
 					<div className='flex items-center justify-center h-screen'>
 						<svg
 							className='animate-spin h-10 w-10 text-gray-500'
@@ -83,7 +107,7 @@ export default function Dashboard() {
 				) : (
 					<div className='grid sm:grid-cols-1 lg:grid-cols-2 gap-6 md:grid-rows-[auto_1fr] h-screen sm:mt-5 md:mt-12'>
 						<div className='col-span-1 sm:col-span-1 lg:col-span-2 border-b border-gray-300'>
-							<Stats stats={stats} />
+							<Stats jobCounts={jobCounts} />
 						</div>
 						<div className='sm:col-span-1 lg:col-span-1'>
 							<PieChart jobCounts={jobCounts} />
