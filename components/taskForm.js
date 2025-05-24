@@ -151,6 +151,7 @@ export default function TaskForm({
 				resetForm(e);
 				console.log('Task updated:', updatedTask);
 				onTaskUpdated();
+				setOpen(false);
 			} catch (error) {
 				console.error('Error updating task:', error);
 				setAlertMessage('Failed to update task.');

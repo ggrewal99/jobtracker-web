@@ -109,7 +109,7 @@ export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 										<p className='text-sm text-gray-500 mt-1'>
 											{
 												taskTypes[item.taskType]
-													.displayName
+													?.displayName
 											}
 										</p>
 									</div>

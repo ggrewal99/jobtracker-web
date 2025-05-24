@@ -1,5 +1,5 @@
 const taskTypes = {
-	followUp: {
+	'follow-up': {
 		displayName: 'Follow Up',
 		value: 'follow-up',
 	},
