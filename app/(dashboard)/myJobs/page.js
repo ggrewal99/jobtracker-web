@@ -50,7 +50,7 @@ export default function MyJobs() {
 						</div>
 					</div>
 				</div>
-				<GridList jobs={filteredJobs} />
+				<GridList items={filteredJobs} itemType='job' />
 			</div>
 		</>
 	);

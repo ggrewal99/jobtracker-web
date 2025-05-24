@@ -9,7 +9,7 @@ import {
 	Label,
 } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const timeOptions = [
 	{ id: 1, name: 'Morning 8:00 AM' },
@@ -54,10 +54,8 @@ const formatTime = (input) => {
 	return `${hours}:${minutes} ${period}`;
 };
 
-export default function TimeCombobox() {
+export default function TimeCombobox({ time, setTime, initialTime }) {
 	const [query, setQuery] = useState('');
-	const [selectedTime, setSelectedTime] = useState(null);
-
 	const filteredTimes =
 		query === ''
 			? timeOptions
@@ -65,16 +63,37 @@ export default function TimeCombobox() {
 					time.name.toLowerCase().includes(query.toLowerCase())
 			  );
 
+	useEffect(() => {
+		// If initialTime is provided, set it as the selected time
+		if (initialTime) {
+			const formattedInitialTime = formatTime(initialTime);
+			const initialOption = timeOptions.find(
+				(option) => formatTime(option.name) === formattedInitialTime
+			);
+			if (initialOption) {
+				console.log('Initial option found:', initialOption);
+
+				setTime({ ...initialOption, name: formattedInitialTime });
+			} else {
+				// If no matching predefined option, set as custom
+				setTime({ id: 5, name: formattedInitialTime });
+			}
+		} else {
+			// If no initial time, set to null
+			setTime(null);
+		}
+	}, [initialTime, setTime]);
+
 	const handleChange = (value) => {
 		if (value?.name === 'Custom') {
 			// Set empty input for Custom selection
-			setSelectedTime({ id: 5, name: '' });
+			setTime({ id: 5, name: '' });
 		} else if (value) {
 			// Format predefined option to show only time
-			setSelectedTime({ ...value, name: formatTime(value.name) });
+			setTime({ ...value, name: formatTime(value.name) });
 		} else {
 			// Handle cleared input
-			setSelectedTime(null);
+			setTime(null);
 		}
 		setQuery('');
 	};
@@ -82,9 +101,9 @@ export default function TimeCombobox() {
 	const handleInputChange = (event) => {
 		const inputValue = event.target.value;
 		setQuery(inputValue);
-		// Update selectedTime for custom input or non-matching input
+		// Update time for custom input or non-matching input
 		if (
-			selectedTime?.name === 'Custom' ||
+			time?.name === 'Custom' ||
 			!filteredTimes.some(
 				(time) =>
 					formatTime(time.name).toLowerCase() ===
@@ -92,12 +111,12 @@ export default function TimeCombobox() {
 			)
 		) {
 			const formattedTime = formatTime(inputValue);
-			setSelectedTime({ id: 5, name: formattedTime });
+			setTime({ id: 5, name: formattedTime });
 		}
 	};
 
 	return (
-		<Combobox as='div' value={selectedTime} onChange={handleChange}>
+		<Combobox as='div' value={time} onChange={handleChange}>
 			<Label className='block text-sm/6 font-medium text-gray-900 sr-only'>
 				Select Time
 			</Label>
