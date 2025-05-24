@@ -119,12 +119,6 @@ export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 					</div>
 				))}
 			</div>
-			<TaskModal
-				open={openTaskModal}
-				setOpen={setOpenTaskModal}
-				selectedTask={selectedTask}
-				onTaskUpdated={onTaskUpdated}
-			/>
 
 			{hasMore && (
 				<div className='flex justify-center'>
@@ -136,6 +130,12 @@ export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 					</button>
 				</div>
 			)}
+			<TaskModal
+				open={openTaskModal}
+				setOpen={setOpenTaskModal}
+				selectedTask={selectedTask}
+				onTaskUpdated={onTaskUpdated}
+			/>
 		</div>
 	);
 }

@@ -178,7 +178,7 @@ export default function TaskForm({
 					required
 					defaultValue={title}
 					onChange={(e) => setTitle(e.target.value)}
-					className='block w-full px-3 pt-2.5 text-lg font-medium text-gray-900 placeholder:text-gray-400 focus:outline-none'
+					className='block w-full px-3 pt-2.5 text-lg font-semibold text-gray-900 placeholder:text-gray-400 focus:outline-none'
 				/>
 				<label htmlFor='description' className='sr-only'>
 					Description
