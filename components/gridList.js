@@ -3,12 +3,17 @@ import { useState, useEffect } from 'react';
 import statuses from '@/constants/jobStatus';
 import useSidebar from '@/hooks/useSidebar';
 import NewJob from '@/components/newJob';
+import { ClockIcon } from '@heroicons/react/20/solid';
+import taskTypes from '@/constants/tasks';
+import TaskModal from './taskModal';
 
-export default function GridList({ items: allItems, itemType }) {
+export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 	// itemType = 'job' | 'task'
 
 	const [visibleItems, setVisibleItems] = useState([]);
 	const [displayCount, setDisplayCount] = useState(9);
+	const [selectedTask, setSelectedTask] = useState(null);
+	const [openTaskModal, setOpenTaskModal] = useState(false);
 	const { setSidebarOpen, setSidebarContent, setSidebarTitle } = useSidebar();
 
 	useEffect(() => {
@@ -21,6 +26,9 @@ export default function GridList({ items: allItems, itemType }) {
 			setSidebarOpen(true);
 			setSidebarTitle('Edit Job');
 			setSidebarContent(<NewJob exisitingJob={item} />);
+		} else if (itemType == 'task') {
+			setSelectedTask(item);
+			setOpenTaskModal(true);
 		}
 	};
 
@@ -44,7 +52,7 @@ export default function GridList({ items: allItems, itemType }) {
 					<div
 						key={item._id}
 						onClick={() => handleItemClick(item)}
-						className='relative select-none flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-xs focus-within:ring-2 focus-within:ring-blue-400 focus-within:ring-offset-2 hover:border-gray-400'
+						className='relative select-none flex items-start space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-xs focus-within:ring-2 focus-within:ring-blue-400 focus-within:ring-offset-2 hover:border-blue-400'
 					>
 						{itemType === 'job' && (
 							<>
@@ -74,19 +82,49 @@ export default function GridList({ items: allItems, itemType }) {
 									<p className='text-sm font-bold text-gray-900'>
 										{item.title}
 									</p>
-									<p className='text-sm text-gray-500'>
+									<p className='text-lg text-gray-900'>
 										{item.notes}
 									</p>
-									<p className='text-sm text-gray-500'>
-										{item.taskType}
-									</p>
-									<p>{item.dueDateTime}</p>
+									<div className='flex justify-between'>
+										<div
+											className='text-xs mt-1 flex border border-gray-200 rounded-md p-1 bg-gray-100 w-fit'
+											onClick={() =>
+												handleItemClick(item)
+											}
+										>
+											<span>
+												<ClockIcon className='h-4 w-4 me-1' />
+											</span>
+											{new Date(
+												item.dueDateTime
+											).toLocaleString('en-GB', {
+												day: '2-digit',
+												month: 'long',
+												year: 'numeric',
+												hour: 'numeric',
+												minute: '2-digit',
+												hour12: true,
+											})}
+										</div>
+										<p className='text-sm text-gray-500 mt-1'>
+											{
+												taskTypes[item.taskType]
+													.displayName
+											}
+										</p>
+									</div>
 								</div>
 							</div>
 						)}
 					</div>
 				))}
 			</div>
+			<TaskModal
+				open={openTaskModal}
+				setOpen={setOpenTaskModal}
+				selectedTask={selectedTask}
+				onTaskUpdated={onTaskUpdated}
+			/>
 
 			{hasMore && (
 				<div className='flex justify-center'>

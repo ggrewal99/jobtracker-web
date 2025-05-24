@@ -9,7 +9,7 @@ import {
 	Label,
 } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const timeOptions = [
 	{ id: 1, name: 'Morning 8:00 AM' },
@@ -54,7 +54,7 @@ const formatTime = (input) => {
 	return `${hours}:${minutes} ${period}`;
 };
 
-export default function TimeCombobox({ time, setTime }) {
+export default function TimeCombobox({ time, setTime, initialTime }) {
 	const [query, setQuery] = useState('');
 	const filteredTimes =
 		query === ''
@@ -62,6 +62,27 @@ export default function TimeCombobox({ time, setTime }) {
 			: timeOptions.filter((time) =>
 					time.name.toLowerCase().includes(query.toLowerCase())
 			  );
+
+	useEffect(() => {
+		// If initialTime is provided, set it as the selected time
+		if (initialTime) {
+			const formattedInitialTime = formatTime(initialTime);
+			const initialOption = timeOptions.find(
+				(option) => formatTime(option.name) === formattedInitialTime
+			);
+			if (initialOption) {
+				console.log('Initial option found:', initialOption);
+
+				setTime({ ...initialOption, name: formattedInitialTime });
+			} else {
+				// If no matching predefined option, set as custom
+				setTime({ id: 5, name: formattedInitialTime });
+			}
+		} else {
+			// If no initial time, set to null
+			setTime(null);
+		}
+	}, [initialTime, setTime]);
 
 	const handleChange = (value) => {
 		if (value?.name === 'Custom') {

@@ -8,26 +8,76 @@ import { format, set, parse } from 'date-fns';
 import TimeCombobox from '@/components/timeCombobox';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import taskTypes from '@/constants/tasks';
-import { addNewTask } from '@/lib/api';
+import { addNewTask, updateTask, deleteTask } from '@/lib/api';
 import useAlert from '@/hooks/useAlert';
+import useModal from '@/hooks/useModal';
 
 function classNames(...classes) {
 	return classes.filter(Boolean).join(' ');
 }
 
-export default function TaskForm({ onTaskCreated }) {
-	const [title, setTitle] = useState('');
-	const [description, setDescription] = useState('');
-	const [selectedDate, setSelectedDate] = useState(null);
+export default function TaskForm({
+	onTaskCreated,
+	selectedTask,
+	onTaskUpdated,
+	setOpen,
+}) {
+	const [title, setTitle] = useState(selectedTask?.title || '');
+	const [description, setDescription] = useState(selectedTask?.notes || '');
+	const [selectedDate, setSelectedDate] = useState(
+		selectedTask?.dueDateTime ? new Date(selectedTask.dueDateTime) : null
+	);
 	const [selectedTime, setSelectedTime] = useState(null);
-	const [taskType, setTaskType] = useState('select');
+	const [initialTime, setInitialTime] = useState(
+		selectedTask?.dueDateTime
+			? format(new Date(selectedTask.dueDateTime), 'h:mm a')
+			: null
+	);
+	const [taskType, setTaskType] = useState(
+		selectedTask?.taskType || 'select'
+	);
 	const { setShowAlert, setAlertMessage, setAlertType } = useAlert();
+	const { setShowModal, setModalContent } = useModal();
 
 	const displayDate = selectedDate
 		? format(selectedDate, 'MMM dd, yyyy')
 		: 'Due date';
 
 	const today = new Date();
+	console.log('selectedTime:', selectedTime);
+
+	const resetForm = (e) => {
+		e.target.reset();
+		setTitle('');
+		setDescription('');
+		setSelectedDate(null);
+		setSelectedTime(null);
+		setTaskType('select');
+	};
+
+	const handleDelete = async () => {
+		setShowModal(true);
+		setModalContent({
+			title: 'Delete Task',
+			message: 'Are you sure you want to delete this task?',
+			btnText: 'Delete Task',
+			onConfirm: async () => {
+				try {
+					await deleteTask(selectedTask._id);
+					setAlertMessage('Task deleted successfully!');
+					setAlertType('success');
+					setShowAlert(true);
+					onTaskUpdated();
+					setOpen(false);
+				} catch (error) {
+					console.error('Error deleting task:', error);
+					setAlertMessage('Failed to delete task.');
+					setAlertType('error');
+					setShowAlert(true);
+				}
+			},
+		});
+	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -63,30 +113,50 @@ export default function TaskForm({ onTaskCreated }) {
 			dueDateTime: combinedDateTime,
 		});
 
-		try {
-			const createdTask = await addNewTask({
-				title,
-				notes: description,
-				taskType,
-				dueDateTime: combinedDateTime,
-			});
-			setAlertMessage('Task created successfully!');
-			setAlertType('success');
-			setShowAlert(true);
-			e.target.reset();
-			setTitle('');
-			setDescription('');
-			setSelectedDate(null);
-			setSelectedTime(null);
-			setTaskType('select');
-			console.log('Task created:', createdTask);
+		if (!selectedTask) {
+			try {
+				const createdTask = await addNewTask({
+					title,
+					notes: description,
+					taskType,
+					dueDateTime: combinedDateTime,
+				});
+				setAlertMessage('Task created successfully!');
+				setAlertType('success');
+				setShowAlert(true);
+				resetForm(e);
+				console.log('Task created:', createdTask);
 
-			onTaskCreated(createdTask.task);
-		} catch (error) {
-			console.error('Error creating task:', error);
-			setAlertMessage('Failed to create task.');
-			setAlertType('error');
-			setShowAlert(true);
+				onTaskCreated(createdTask.task);
+			} catch (error) {
+				console.error('Error creating task:', error);
+				setAlertMessage('Failed to create task.');
+				setAlertType('error');
+				setShowAlert(true);
+			}
+		} else {
+			try {
+				const updatedTask = await updateTask(
+					{
+						title,
+						notes: description,
+						taskType,
+						dueDateTime: combinedDateTime,
+					},
+					selectedTask._id
+				);
+				setAlertMessage('Task updated successfully!');
+				setAlertType('success');
+				setShowAlert(true);
+				resetForm(e);
+				console.log('Task updated:', updatedTask);
+				onTaskUpdated();
+			} catch (error) {
+				console.error('Error updating task:', error);
+				setAlertMessage('Failed to update task.');
+				setAlertType('error');
+				setShowAlert(true);
+			}
 		}
 	};
 
@@ -105,6 +175,7 @@ export default function TaskForm({ onTaskCreated }) {
 					type='text'
 					placeholder='Title'
 					required
+					defaultValue={title}
 					onChange={(e) => setTitle(e.target.value)}
 					className='block w-full px-3 pt-2.5 text-lg font-medium text-gray-900 placeholder:text-gray-400 focus:outline-none'
 				/>
@@ -117,9 +188,9 @@ export default function TaskForm({ onTaskCreated }) {
 					rows={2}
 					placeholder='Write a description...'
 					required
+					defaultValue={description}
 					onChange={(e) => setDescription(e.target.value)}
 					className='block w-full resize-none px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6'
-					defaultValue={''}
 				/>
 
 				{/* Spacer element to match the height of the toolbar */}
@@ -207,16 +278,26 @@ export default function TaskForm({ onTaskCreated }) {
 						<TimeCombobox
 							time={selectedTime}
 							setTime={setSelectedTime}
+							initialTime={initialTime}
 						/>
 					</div>
 				</div>
 				<div className='flex items-center justify-end space-x-3 border-t border-gray-200 px-2 py-2 sm:px-3'>
-					<div className='shrink-0'>
+					<div className='shrink-0 flex gap-2'>
+						{selectedTask && (
+							<button
+								type='button'
+								onClick={handleDelete}
+								className='rounded-md bg-red-700 text-white px-3 py-2 text-sm font-semibold shadow-xs hover:bg-red-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500'
+							>
+								Delete
+							</button>
+						)}
 						<button
 							type='submit'
 							className='inline-flex items-center rounded-md bg-blue-500 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-blue-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500'
 						>
-							Create
+							{selectedTask ? 'Update' : 'Create'}
 						</button>
 					</div>
 				</div>
