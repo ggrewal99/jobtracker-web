@@ -3,63 +3,87 @@ import { useState, useEffect } from 'react';
 import statuses from '@/constants/jobStatus';
 import useSidebar from '@/hooks/useSidebar';
 import NewJob from '@/components/newJob';
-import { Loading } from './loading';
 
-export default function GridList({ jobs: allJobs }) {
-	const [visibleJobs, setVisibleJobs] = useState([]);
+export default function GridList({ items: allItems, itemType }) {
+	// itemType = 'job' | 'task'
+
+	const [visibleItems, setVisibleItems] = useState([]);
 	const [displayCount, setDisplayCount] = useState(9);
 	const { setSidebarOpen, setSidebarContent, setSidebarTitle } = useSidebar();
 
 	useEffect(() => {
-		// Show initial set of jobs
-		setVisibleJobs(allJobs.slice(0, displayCount));
-	}, [allJobs, displayCount]);
+		// Show initial set of items
+		setVisibleItems(allItems.slice(0, displayCount));
+	}, [allItems, displayCount]);
 
-	const handleJobClick = (job) => {
-		setSidebarOpen(true);
-		setSidebarTitle('Edit Job');
-		setSidebarContent(<NewJob exisitingJob={job} />);
+	const handleItemClick = (item) => {
+		if (itemType == 'job') {
+			setSidebarOpen(true);
+			setSidebarTitle('Edit Job');
+			setSidebarContent(<NewJob exisitingJob={item} />);
+		}
 	};
 
 	const loadMore = () => {
 		const newDisplayCount = displayCount + 9;
 		setDisplayCount(newDisplayCount);
-		setVisibleJobs(allJobs.slice(0, newDisplayCount));
+		setVisibleItems(allItems.slice(0, newDisplayCount));
 	};
 
-	const hasMore = allJobs.length > visibleJobs.length;
+	const hasMore = allItems.length > visibleItems.length;
 
 	return (
 		<div className='space-y-6'>
-			{allJobs.length === 0 ?? (
+			{allItems.length === 0 ?? (
 				<div className='flex items-center justify-center'>
-					<p className='text-gray-500'>No jobs yet</p>
+					<p className='text-gray-500'>Nothing here yet.</p>
 				</div>
 			)}
 			<div className='grid grid-cols-1 gap-4 sm:grid-cols-3 cursor-pointer'>
-				{visibleJobs.map((job) => (
+				{visibleItems.map((item) => (
 					<div
-						key={job._id}
-						onClick={() => handleJobClick(job)}
+						key={item._id}
+						onClick={() => handleItemClick(item)}
 						className='relative select-none flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-xs focus-within:ring-2 focus-within:ring-blue-400 focus-within:ring-offset-2 hover:border-gray-400'
 					>
-						<div className='min-w-0 flex-1'>
-							<div>
-								<p className='text-sm font-bold text-gray-900'>
-									{job.company}
+						{itemType === 'job' && (
+							<>
+								<div className='min-w-0 flex-1'>
+									<div>
+										<p className='text-sm font-bold text-gray-900'>
+											{item.company}
+										</p>
+										<p className='text-sm text-gray-500'>
+											{item.position}
+										</p>
+									</div>
+								</div>
+								<p
+									className={`text-sm capitalize py-1 px-2 text-white rounded ${
+										statuses[item.status].bgColor
+									}`}
+								>
+									{statuses[item.status].displayName}
 								</p>
-								<p className='text-sm text-gray-500'>
-									{job.position}
-								</p>
+							</>
+						)}
+
+						{itemType === 'task' && (
+							<div className='min-w-0 flex-1'>
+								<div>
+									<p className='text-sm font-bold text-gray-900'>
+										{item.title}
+									</p>
+									<p className='text-sm text-gray-500'>
+										{item.notes}
+									</p>
+									<p className='text-sm text-gray-500'>
+										{item.taskType}
+									</p>
+									<p>{item.dueDateTime}</p>
+								</div>
 							</div>
-						</div>
-						<p
-							className={`text-sm capitalize py-1 px-2 text-white rounded ${
-								statuses[job.status].bgColor
-							}`}
-						>
-							{statuses[job.status].displayName}
-						</p>
+						)}
 					</div>
 				))}
 			</div>
