@@ -25,6 +25,7 @@ export default function Navbar() {
 	const links = [
 		{ name: 'Dashboard', href: '/' },
 		{ name: 'My Jobs', href: '/myJobs' },
+		{ name: 'My Tasks', href: '/myTasks' },
 	];
 
 	const onNewJobClick = () => {

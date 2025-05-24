@@ -19,45 +19,6 @@ export default function Dashboard() {
 	const [jobCounts, setJobCounts] = useState(initialJobCounts);
 	const [stats, setStats] = useState([]);
 
-	// useEffect(() => {
-	// 	if (jobs && jobs.length > 0) {
-	// 		const pending = jobs.filter(
-	// 			(job) => job.status === 'applied'
-	// 		).length;
-	// 		const inProgress = jobs.filter(
-	// 			(job) => job.status === 'interviewing'
-	// 		).length;
-	// 		const accepted = jobs.filter(
-	// 			(job) => job.status === 'offer'
-	// 		).length;
-	// 		const rejected = jobs.filter(
-	// 			(job) => job.status === 'rejected'
-	// 		).length;
-
-	// 		console.log('stats', {
-	// 			pending,
-	// 			inProgress,
-	// 			accepted,
-	// 			rejected,
-	// 		});
-
-	// 		setJobCounts({
-	// 			pending,
-	// 			inProgress,
-	// 			accepted,
-	// 			rejected,
-	// 		});
-
-	// 		setStats([
-	// 			{ name: 'Total jobs', value: jobs.length },
-	// 			{ name: 'Pending', value: pending },
-	// 			{ name: 'In Progress', value: inProgress },
-	// 			{ name: 'Rejected', value: rejected },
-	// 			{ name: 'Accepted', value: accepted },
-	// 		]);
-	// 	}
-	// }, [jobs]);
-
 	useEffect(() => {
 		if (jobs && jobs.length > 0) {
 			const newJobCounts = {};
