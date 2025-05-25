@@ -123,7 +123,13 @@ export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 									</p>
 									<div className='flex justify-between'>
 										<div
-											className='text-xs mt-1 flex border border-gray-200 rounded-md p-1 bg-gray-100 w-fit'
+											className={`text-xs mt-1 flex border border-gray-200 rounded-md p-1 bg-gray-100 w-fit ${
+												new Date(item.dueDateTime) <
+													new Date() &&
+												!item.completed
+													? 'text-red-500'
+													: 'text-gray-700'
+											}`}
 											onClick={() =>
 												handleItemClick(item)
 											}
