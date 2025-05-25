@@ -7,6 +7,7 @@ import useAuth from '@/hooks/useAuth';
 import useJobs from '@/hooks/useJobs';
 import { useEffect, useState } from 'react';
 import statuses from '@/constants/jobStatus';
+import TasksCard from '@/components/tasksCard';
 
 export default function Dashboard() {
 	const { user, userLoading } = useAuth();
@@ -66,7 +67,7 @@ export default function Dashboard() {
 						</svg>
 					</div>
 				) : (
-					<div className='grid sm:grid-cols-1 lg:grid-cols-2 gap-6 md:grid-rows-[auto_1fr] h-screen sm:mt-5 md:mt-12'>
+					<div className='grid sm:grid-cols-1 lg:grid-cols-2 gap-6 md:grid-rows-[auto_1fr] h-fit sm:mt-5 md:mt-12'>
 						<div className='col-span-1 sm:col-span-1 lg:col-span-2 border-b border-gray-300'>
 							<Stats jobCounts={jobCounts} />
 						</div>
@@ -75,6 +76,9 @@ export default function Dashboard() {
 						</div>
 						<div className='sm:col-span-1 lg:col-span-1'>
 							<RecentCard />
+						</div>
+						<div className='col-span-1 sm:col-span-1 lg:col-span-2'>
+							<TasksCard />
 						</div>
 					</div>
 				)}
