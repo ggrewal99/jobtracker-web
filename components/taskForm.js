@@ -6,7 +6,6 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { format, set, parse } from 'date-fns';
 import TimeCombobox from '@/components/timeCombobox';
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import taskTypes from '@/constants/tasks';
 import { addNewTask, updateTask, deleteTask } from '@/lib/api';
 import useAlert from '@/hooks/useAlert';
