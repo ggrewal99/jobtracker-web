@@ -3,9 +3,11 @@ import { useState, useEffect } from 'react';
 import statuses from '@/constants/jobStatus';
 import useSidebar from '@/hooks/useSidebar';
 import NewJob from '@/components/newJob';
-import { ClockIcon } from '@heroicons/react/20/solid';
+import { ClockIcon, CheckIcon, XMarkIcon } from '@heroicons/react/20/solid';
 import taskTypes from '@/constants/tasks';
 import TaskModal from './taskModal';
+import { updateTask } from '@/lib/api';
+import useAlert from '@/hooks/useAlert';
 
 export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 	// itemType = 'job' | 'task'
@@ -15,6 +17,7 @@ export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 	const [selectedTask, setSelectedTask] = useState(null);
 	const [openTaskModal, setOpenTaskModal] = useState(false);
 	const { setSidebarOpen, setSidebarContent, setSidebarTitle } = useSidebar();
+	const { setShowAlert, setAlertMessage, setAlertType } = useAlert();
 
 	useEffect(() => {
 		// Show initial set of items
@@ -38,6 +41,33 @@ export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 		setVisibleItems(allItems.slice(0, newDisplayCount));
 	};
 
+	const handleCheckboxChange = async (item, e) => {
+		e.stopPropagation(); // Prevent triggering handleItemClick
+
+		try {
+			if (itemType !== 'task') {
+				throw new Error('Checkbox can only be changed for tasks.');
+			}
+			const isItemCompleted = item.completed ? false : true;
+			await updateTask({ completed: isItemCompleted }, item._id);
+			setShowAlert(true);
+			setAlertMessage(
+				`Task marked as ${
+					isItemCompleted ? 'completed' : 'not completed'
+				}.`
+			);
+			setAlertType('success');
+			const updatedTask = { ...item, completed: true };
+			onTaskUpdated(updatedTask);
+		} catch (error) {
+			console.error('Error updating task:', error);
+			setShowAlert(true);
+			setAlertMessage('Something went wrong.');
+			setAlertType('error');
+			return;
+		}
+	};
+
 	const hasMore = allItems.length > visibleItems.length;
 
 	return (
@@ -52,7 +82,7 @@ export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 					<div
 						key={item._id}
 						onClick={() => handleItemClick(item)}
-						className='relative select-none flex items-start space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-xs focus-within:ring-2 focus-within:ring-blue-400 focus-within:ring-offset-2 hover:border-blue-400'
+						className='relative select-none flex items-start space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-xs focus-within:ring-2 focus-within:ring-blue-400 focus-within:ring-offset-2 hover:border-blue-400 group'
 					>
 						{itemType === 'job' && (
 							<>
@@ -77,8 +107,14 @@ export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 						)}
 
 						{itemType === 'task' && (
-							<div className='min-w-0 flex-1'>
-								<div>
+							<div className='min-w-0 flex-1 mb-3'>
+								<div
+									className={`${
+										item.completed
+											? 'opacity-50 line-through'
+											: ''
+									}`}
+								>
 									<p className='text-sm font-bold text-gray-900'>
 										{item.title}
 									</p>
@@ -113,6 +149,39 @@ export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 											}
 										</p>
 									</div>
+								</div>
+								<div className='absolute bottom-2 left-2 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity group/icon cursor-pointer hover:bg-gray-200 rounded-full flex items-center justify-center'>
+									{!item.completed ? (
+										<>
+											<CheckIcon
+												className='h-6 w-6 text-gray-600'
+												onClick={(e) =>
+													handleCheckboxChange(
+														item,
+														e
+													)
+												}
+											/>
+											<span className='absolute bottom-8 left-1/2 text-nowrap transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover/icon:opacity-100 transition-opacity pointer-events-none'>
+												Mark as completed
+											</span>
+										</>
+									) : (
+										<>
+											<XMarkIcon
+												className='h-6 w-6 text-gray-600'
+												onClick={(e) =>
+													handleCheckboxChange(
+														item,
+														e
+													)
+												}
+											/>
+											<span className='absolute bottom-8 left-1/2 text-nowrap transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover/icon:opacity-100 transition-opacity pointer-events-none'>
+												Mark as not completed
+											</span>
+										</>
+									)}
 								</div>
 							</div>
 						)}
