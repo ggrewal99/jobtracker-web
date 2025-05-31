@@ -25,7 +25,7 @@ export default function MyJobs() {
 				<h2 className='text-left text-xl font-bold tracking-tight text-gray-900 mb-8'>
 					Jobs List
 				</h2>
-				<div className='w-1/4 mb-5'>
+				<div className='w-full md:w-1/4 mb-5'>
 					<label
 						htmlFor='search'
 						className='block text-sm/6 font-medium text-gray-900'
@@ -40,7 +40,7 @@ export default function MyJobs() {
 								type='text'
 								value={searchQuery}
 								onChange={handleSearchChange}
-								className='block min-w-0 grow px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6'
+								className='block grow px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6'
 							/>
 							<div className='flex py-1.5 pr-1.5'>
 								<kbd className='inline-flex items-center rounded-sm border border-gray-200 px-1 font-sans text-xs text-gray-400'>

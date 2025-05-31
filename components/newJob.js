@@ -11,7 +11,6 @@ import useAlert from '@/hooks/useAlert';
 import useSidebar from '@/hooks/useSidebar';
 import useModal from '@/hooks/useModal';
 import useJobs from '@/hooks/useJobs';
-import TaskForm from './taskForm';
 export default function NewJob({ exisitingJob }) {
 	const [position, setPosition] = useState(exisitingJob?.position || '');
 	const [company, setCompany] = useState(exisitingJob?.company || '');

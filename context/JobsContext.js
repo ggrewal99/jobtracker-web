@@ -38,6 +38,12 @@ export const JobsProvider = ({ children }) => {
 		setJobs((prevJobs) => prevJobs.filter((job) => job._id !== jobId));
 	};
 
+	const removeMultipleJobs = (jobIds) => {
+		setJobs((prevJobs) =>
+			prevJobs.filter((job) => !jobIds.includes(job._id))
+		);
+	};
+
 	const updateJob = (updatedJob) => {
 		setJobs((prevJobs) =>
 			prevJobs.map((job) =>
@@ -48,7 +54,15 @@ export const JobsProvider = ({ children }) => {
 
 	return (
 		<JobsContext.Provider
-			value={{ jobs, getJobs, addJob, removeJob, updateJob, jobsLoading }}
+			value={{
+				jobs,
+				getJobs,
+				addJob,
+				removeJob,
+				removeMultipleJobs,
+				updateJob,
+				jobsLoading,
+			}}
 		>
 			{children}
 		</JobsContext.Provider>

@@ -1,13 +1,20 @@
-// In your GridList component
 import { useState, useEffect } from 'react';
 import statuses from '@/constants/jobStatus';
 import useSidebar from '@/hooks/useSidebar';
 import NewJob from '@/components/newJob';
-import { ClockIcon, CheckIcon, XMarkIcon } from '@heroicons/react/20/solid';
+import {
+	ClockIcon,
+	CheckIcon,
+	XMarkIcon,
+	TrashIcon,
+} from '@heroicons/react/20/solid';
 import taskTypes from '@/constants/tasks';
 import TaskModal from './taskModal';
 import { updateTask } from '@/lib/api';
 import useAlert from '@/hooks/useAlert';
+import useModal from '@/hooks/useModal';
+import useJobs from '@/hooks/useJobs';
+import { deleteMultipleJobs, deleteMultipleTasks } from '@/lib/api';
 
 export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 	// itemType = 'job' | 'task'
@@ -15,9 +22,12 @@ export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 	const [visibleItems, setVisibleItems] = useState([]);
 	const [displayCount, setDisplayCount] = useState(9);
 	const [selectedTask, setSelectedTask] = useState(null);
+	const [selectedItems, setSelectedItems] = useState([]);
 	const [openTaskModal, setOpenTaskModal] = useState(false);
 	const { setSidebarOpen, setSidebarContent, setSidebarTitle } = useSidebar();
 	const { setShowAlert, setAlertMessage, setAlertType } = useAlert();
+	const { setShowModal, setModalContent } = useModal();
+	const { removeMultipleJobs } = useJobs();
 
 	useEffect(() => {
 		// Show initial set of items
@@ -25,6 +35,11 @@ export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 	}, [allItems, displayCount]);
 
 	const handleItemClick = (item) => {
+		if (selectedItems.length > 0) {
+			// If there are selected items, toggle selection
+			handleSelectItem(null, item);
+			return;
+		}
 		if (itemType == 'job') {
 			setSidebarOpen(true);
 			setSidebarTitle('Edit Job');
@@ -68,22 +83,116 @@ export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 		}
 	};
 
+	const handleSelectItem = (e, item) => {
+		if (e !== null) e.stopPropagation();
+		if (selectedItems.includes(item._id)) {
+			setSelectedItems(selectedItems.filter((id) => id !== item._id));
+		} else {
+			setSelectedItems([...selectedItems, item._id]);
+		}
+	};
+
+	const handleDeleteSelected = () => {
+		// Implement delete functionality here
+		setShowModal(true);
+		setModalContent({
+			title: 'Delete Selected',
+			message: `Are you sure you want to delete ${selectedItems.length} selected item(s)?`,
+			btnText: 'Delete Selected',
+			onConfirm: async () => {
+				// Implement delete functionality here
+				try {
+					if (itemType === 'job') {
+						await deleteMultipleJobs(selectedItems);
+						removeMultipleJobs(selectedItems);
+					} else if (itemType === 'task') {
+						await deleteMultipleTasks(selectedItems);
+						onTaskUpdated();
+					}
+					setShowAlert(true);
+					setAlertMessage('Selected items deleted successfully!');
+					setAlertType('success');
+					setSelectedItems([]);
+				} catch (error) {
+					console.error('Error deleting selected items:', error);
+					setShowAlert(true);
+					setAlertMessage('Failed to delete selected items.');
+					setAlertType('error');
+				}
+				setSelectedItems([]);
+				setShowModal(false);
+			},
+		});
+	};
+
 	const hasMore = allItems.length > visibleItems.length;
 
 	return (
-		<div className='space-y-6'>
+		<div className='space-y-6 relative overflow-visible'>
 			{allItems.length === 0 ?? (
 				<div className='flex items-center justify-center'>
 					<p className='text-gray-500'>Nothing here yet.</p>
 				</div>
 			)}
+
+			{selectedItems.length > 0 && (
+				<div className='static md:absolute -top-15 right-2 flex items-center justify-start md:justify-end mb-4 gap-2'>
+					<div className='text-sm text-gray-500'>
+						{selectedItems.length} item(s) selected
+					</div>
+					<div className='flex items-center gap-2'>
+						<div className='relative group'>
+							<button
+								onClick={handleDeleteSelected}
+								className='px-4 py-2 text-white bg-red-500 hover:bg-red-400 rounded cursor-pointer'
+							>
+								<TrashIcon className='h-5 w-5' />
+							</button>
+							<span className='absolute bottom-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap'>
+								Delete selected
+							</span>
+						</div>
+						<div className='relative group'>
+							<button
+								onClick={() => setSelectedItems([])}
+								className='px-4 py-2 text-white bg-gray-500 hover:bg-gray-400 rounded cursor-pointer'
+							>
+								<XMarkIcon className='h-5 w-5' />
+							</button>
+							<span className='absolute bottom-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap'>
+								Clear selection
+							</span>
+						</div>
+					</div>
+				</div>
+			)}
+
 			<div className='grid grid-cols-1 gap-4 sm:grid-cols-3 cursor-pointer'>
 				{visibleItems.map((item) => (
 					<div
 						key={item._id}
 						onClick={() => handleItemClick(item)}
-						className='relative select-none flex items-start space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-xs focus-within:ring-2 focus-within:ring-blue-400 focus-within:ring-offset-2 hover:border-blue-400 group'
+						className={`relative select-none flex items-start space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-xs hover:border-blue-400 group ${
+							selectedItems.includes(item._id)
+								? 'border-black ring-2 ring-black'
+								: ''
+						}`}
 					>
+						<div
+							className={`absolute -top-2 -right-5 z-10 transition-opacity ${
+								selectedItems.length > 0
+									? 'opacity-100'
+									: 'opacity-0 group-hover:opacity-100'
+							}`}
+							onClick={(e) => handleSelectItem(e, item)}
+						>
+							<input
+								type='checkbox'
+								checked={selectedItems.includes(item._id)}
+								readOnly
+								className='h-5 w-5 text-blue-600 border-gray-300 focus:ring-blue-500 cursor-pointer'
+							/>
+						</div>
 						{itemType === 'job' && (
 							<>
 								<div className='min-w-0 flex-1'>
