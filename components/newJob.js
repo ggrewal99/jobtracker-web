@@ -22,7 +22,7 @@ export default function NewJob({ exisitingJob }) {
 	const [loading, setLoading] = useState(false);
 	const { setShowAlert, setAlertMessage, setAlertType } = useAlert();
 	const { setShowModal, setModalContent } = useModal();
-	const { addJob, updateJob, removeJob } = useJobs();
+	const { updateJob, removeJob, getJobs } = useJobs();
 
 	const handleDelete = async () => {
 		setShowModal(true);
@@ -60,12 +60,7 @@ export default function NewJob({ exisitingJob }) {
 					status,
 					notes,
 				});
-				addJob({
-					position,
-					company,
-					status,
-					notes,
-				});
+				await getJobs();
 				setAlertMessage('Job created successfully!');
 			} else {
 				// Update Existing Job

@@ -30,10 +30,6 @@ export const JobsProvider = ({ children }) => {
 		}
 	}, [user, userLoading]);
 
-	const addJob = (newJob) => {
-		setJobs((prevJobs) => [...prevJobs, newJob]);
-	};
-
 	const removeJob = (jobId) => {
 		setJobs((prevJobs) => prevJobs.filter((job) => job._id !== jobId));
 	};
@@ -57,7 +53,6 @@ export const JobsProvider = ({ children }) => {
 			value={{
 				jobs,
 				getJobs,
-				addJob,
 				removeJob,
 				removeMultipleJobs,
 				updateJob,
