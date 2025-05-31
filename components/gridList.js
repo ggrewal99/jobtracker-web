@@ -227,7 +227,7 @@ export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 									<p className='text-sm font-bold text-gray-900'>
 										{item.title}
 									</p>
-									<p className='text-lg text-gray-900'>
+									<p className='text-sm text-gray-900 text-ellipsis overflow-hidden whitespace-nowrap'>
 										{item.notes}
 									</p>
 									<div className='flex justify-between'>
