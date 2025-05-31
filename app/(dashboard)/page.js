@@ -18,7 +18,6 @@ export default function Dashboard() {
 	}, {});
 
 	const [jobCounts, setJobCounts] = useState(initialJobCounts);
-	const [stats, setStats] = useState([]);
 
 	useEffect(() => {
 		if (jobs && jobs.length > 0) {
@@ -30,16 +29,6 @@ export default function Dashboard() {
 			}
 
 			setJobCounts(newJobCounts);
-
-			const newStats = [
-				{ name: 'Total jobs', value: jobs.length },
-				...Object.keys(statuses).map((key) => ({
-					name: statuses[key].displayName,
-					value: newJobCounts[key],
-				})),
-			];
-
-			setStats(newStats);
 		}
 	}, [jobs]);
 
@@ -69,7 +58,10 @@ export default function Dashboard() {
 				) : (
 					<div className='grid sm:grid-cols-1 lg:grid-cols-2 gap-6 md:grid-rows-[auto_1fr] h-fit sm:mt-5 md:mt-12'>
 						<div className='col-span-1 sm:col-span-1 lg:col-span-2 border-b border-gray-300'>
-							<Stats jobCounts={jobCounts} />
+							<Stats
+								jobCounts={jobCounts}
+								totalJobs={jobs.length}
+							/>
 						</div>
 						<div className='sm:col-span-1 lg:col-span-1'>
 							<PieChart jobCounts={jobCounts} />
