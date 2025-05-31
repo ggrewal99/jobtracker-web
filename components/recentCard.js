@@ -16,7 +16,7 @@ export default function RecentCard() {
 
 	return (
 		<div className='bg-white rounded-lg'>
-			<div className='sm:flex sm:items-center p-4 sticky top-0 z-20'>
+			<div className='sm:flex sm:items-center p-4 top-0 z-20'>
 				<div className='sm:flex-auto'>
 					<h1 className='text-2xl'>Recently Added</h1>
 					<p className='mt-2 text-sm text-gray-700'>Last 7 days</p>
