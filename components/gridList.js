@@ -172,7 +172,7 @@ export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 					<div
 						key={item._id}
 						onClick={() => handleItemClick(item)}
-						className={`relative select-none flex items-start space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-xs hover:border-blue-400 group ${
+						className={`relative select-none flex items-start space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-xs hover:border-gray-500 group ${
 							selectedItems.includes(item._id)
 								? 'border-black ring-2 ring-black'
 								: ''
@@ -190,7 +190,7 @@ export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 								type='checkbox'
 								checked={selectedItems.includes(item._id)}
 								readOnly
-								className='h-5 w-5 text-blue-600 border-gray-300 focus:ring-blue-500 cursor-pointer'
+								className='h-5 w-5 text-gray-800 border-gray-300 focus:ring-black cursor-pointer'
 							/>
 						</div>
 						{itemType === 'job' && (
