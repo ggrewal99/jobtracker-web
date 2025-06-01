@@ -17,6 +17,11 @@ export default function NewJob({ exisitingJob }) {
 	const [status, setStatus] = useState(
 		exisitingJob?.status || Object.keys(statuses)[0]
 	);
+	const [dateApplied, setDateApplied] = useState(
+		exisitingJob?.dateApplied
+			? new Date(exisitingJob.dateApplied).toISOString().split('T')[0]
+			: new Date().toISOString().split('T')[0]
+	);
 	const [notes, setNotes] = useState(exisitingJob?.notes || '');
 	const { setSidebarOpen } = useSidebar();
 	const [loading, setLoading] = useState(false);
@@ -54,10 +59,13 @@ export default function NewJob({ exisitingJob }) {
 		try {
 			if (!exisitingJob) {
 				// Create New Job
+				// capitalize first letter of each word in position and company
 				await apiAddNewJob({
-					position,
-					company,
+					position:
+						position.charAt(0).toUpperCase() + position.slice(1),
+					company: company.charAt(0).toUpperCase() + company.slice(1),
 					status,
+					dateApplied,
 					notes,
 				});
 				await getJobs();
@@ -66,17 +74,23 @@ export default function NewJob({ exisitingJob }) {
 				// Update Existing Job
 				await apiUpdateJob(
 					{
-						position,
-						company,
+						position:
+							position.charAt(0).toUpperCase() +
+							position.slice(1),
+						company:
+							company.charAt(0).toUpperCase() + company.slice(1),
 						status,
+						dateApplied,
 						notes,
 					},
 					exisitingJob._id
 				);
 				updateJob({
-					position,
-					company,
+					position:
+						position.charAt(0).toUpperCase() + position.slice(1),
+					company: company.charAt(0).toUpperCase() + company.slice(1),
 					status,
+					dateApplied,
 					notes,
 					_id: exisitingJob._id,
 				});
@@ -96,6 +110,9 @@ export default function NewJob({ exisitingJob }) {
 		setShowAlert(true);
 		setLoading(false);
 	};
+
+	console.log('exisitingJob date applied', exisitingJob?.dateApplied);
+
 	return (
 		<>
 			<form onSubmit={handleSubmit}>
@@ -138,6 +155,27 @@ export default function NewJob({ exisitingJob }) {
 									required
 									defaultValue={company}
 									onChange={(e) => setCompany(e.target.value)}
+									className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
+								/>
+							</div>
+						</div>
+						<div className='sm:col-span-full'>
+							<label
+								htmlFor='date-applied'
+								className='block text-sm/6 font-medium text-gray-900'
+							>
+								Date Applied
+							</label>
+							<div className='mt-2'>
+								<input
+									id='date-applied'
+									name='date-applied'
+									type='date'
+									required
+									defaultValue={dateApplied}
+									onChange={(e) =>
+										setDateApplied(e.target.value)
+									}
 									className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
 								/>
 							</div>

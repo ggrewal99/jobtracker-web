@@ -14,6 +14,7 @@ import { updateTask } from '@/lib/api';
 import useAlert from '@/hooks/useAlert';
 import useModal from '@/hooks/useModal';
 import useJobs from '@/hooks/useJobs';
+import { format } from 'date-fns';
 import { deleteMultipleJobs, deleteMultipleTasks } from '@/lib/api';
 
 export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
@@ -167,7 +168,7 @@ export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 				</div>
 			)}
 
-			<div className='grid grid-cols-1 gap-4 sm:grid-cols-3 cursor-pointer'>
+			<div className='grid grid-cols-1 gap-4 md:grid-cols-4 cursor-pointer'>
 				{visibleItems.map((item) => (
 					<div
 						key={item._id}
@@ -203,10 +204,16 @@ export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 										<p className='text-sm text-gray-500'>
 											{item.position}
 										</p>
+										<p className='text-xs text-gray-500'>
+											{format(
+												item.dateApplied,
+												'dd MMM yyyy'
+											)}
+										</p>
 									</div>
 								</div>
 								<p
-									className={`text-sm capitalize py-1 px-2 text-white rounded ${
+									className={`text-sm capitalize py-1 px-2 text-white rounded self-center ${
 										statuses[item.status].bgColor
 									}`}
 								>
@@ -246,16 +253,10 @@ export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 											<span>
 												<ClockIcon className='h-4 w-4 me-1' />
 											</span>
-											{new Date(
-												item.dueDateTime
-											).toLocaleString('en-GB', {
-												day: '2-digit',
-												month: 'long',
-												year: 'numeric',
-												hour: 'numeric',
-												minute: '2-digit',
-												hour12: true,
-											})}
+											{format(
+												item.dueDateTime,
+												"dd MMM yyyy 'at' h:mm a"
+											)}
 										</div>
 										<p className='text-sm text-gray-500 mt-1'>
 											{

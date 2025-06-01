@@ -2,6 +2,7 @@
 import useJobs from '@/hooks/useJobs';
 import statuses from '@/constants/jobStatus';
 import { Loading } from './loading';
+import { format } from 'date-fns';
 
 export default function RecentCard() {
 	const { jobs, jobsLoading } = useJobs();
@@ -50,7 +51,7 @@ export default function RecentCard() {
 									scope='col'
 									className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
 								>
-									Date
+									Date Applied
 								</th>
 							</tr>
 						</thead>
@@ -84,9 +85,10 @@ export default function RecentCard() {
 												}
 											</td>
 											<td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-												{new Date(
-													job.createdAt
-												).toLocaleDateString()}
+												{format(
+													new Date(job.dateApplied),
+													'dd MMM yyyy'
+												)}
 											</td>
 										</tr>
 									))
