@@ -2,7 +2,7 @@
 import useJobs from '@/hooks/useJobs';
 import statuses from '@/constants/jobStatus';
 import { Loading } from './loading';
-import { format } from 'date-fns';
+import { format, isValid } from 'date-fns';
 
 export default function RecentCard() {
 	const { jobs, jobsLoading } = useJobs();
@@ -85,10 +85,16 @@ export default function RecentCard() {
 												}
 											</td>
 											<td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-												{format(
-													new Date(job.dateApplied),
-													'dd MMM yyyy'
-												)}
+												{isValid(
+													new Date(job.dateApplied)
+												)
+													? format(
+															new Date(
+																job.dateApplied
+															),
+															'dd MMM yyyy'
+													  )
+													: 'Invalid date'}
 											</td>
 										</tr>
 									))

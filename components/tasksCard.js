@@ -2,7 +2,7 @@
 
 import { getTasks } from '@/lib/api';
 import { useEffect, useState } from 'react';
-import { format, parseISO } from 'date-fns';
+import { format, parseISO, isValid } from 'date-fns';
 import taskTypes from '@/constants/tasks';
 import Link from 'next/link';
 import {
@@ -90,7 +90,10 @@ export default function TasksCard() {
 														: 'text-gray-500'
 												}`}
 											>
-												{task.dueDateTime
+												{task.dueDateTime &&
+												isValid(
+													parseISO(task.dueDateTime)
+												)
 													? format(
 															parseISO(
 																task.dueDateTime

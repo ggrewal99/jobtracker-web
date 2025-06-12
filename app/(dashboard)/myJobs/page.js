@@ -2,7 +2,6 @@
 
 import GridList from '@/components/gridList';
 import { useState } from 'react';
-import { getJobs as apiGetJobs } from '@/lib/api';
 import useJobs from '@/hooks/useJobs';
 import statuses from '@/constants/jobStatus';
 import { ChevronDownIcon, CalendarIcon } from '@heroicons/react/20/solid';
@@ -24,12 +23,15 @@ export default function MyJobs() {
 
 	const today = startOfDay(new Date()); // Normalize to start of day (June 1, 2025, 00:00 AEST)
 
-	const displayMinDate = minDateApplied
-		? format(minDateApplied, 'MMM dd, yyyy')
-		: 'Min date';
-	const displayMaxDate = maxDateApplied
-		? format(maxDateApplied, 'MMM dd, yyyy')
-		: 'Max date';
+	const displayMinDate =
+		minDateApplied && isValid(minDateApplied)
+			? format(minDateApplied, 'MMM dd, yyyy')
+			: 'Min date';
+
+	const displayMaxDate =
+		maxDateApplied && isValid(maxDateApplied)
+			? format(maxDateApplied, 'MMM dd, yyyy')
+			: 'Max date';
 
 	const filteredJobs = jobs.filter((job) => {
 		const matchesSearch =
