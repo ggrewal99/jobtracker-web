@@ -18,7 +18,7 @@ export default function RecentCard() {
 	return (
 		<div className='bg-white rounded-lg border border-gray-200 h-full'>
 			<div className='sm:flex sm:items-center top-0 z-20'>
-				<div className='sm:flex-auto pt-3 pl-2 md:pl-3'>
+				<div className='sm:flex-auto p-3'>
 					<h1 className='text-xl md:text-2xl'>Recently Added</h1>
 					<p className='mt-2 text-xs md:text-sm text-gray-700'>
 						Last 7 days
@@ -33,7 +33,7 @@ export default function RecentCard() {
 							<tr>
 								<th
 									scope='col'
-									className='py-3.5 pr-3 pl-2 md:pl-3 text-left text-sm font-semibold text-gray-900'
+									className='py-3.5 pr-3 pl-3 text-left text-sm font-semibold text-gray-900'
 								>
 									Company Name
 								</th>
@@ -74,7 +74,7 @@ export default function RecentCard() {
 								) : (
 									recentJobs.map((job) => (
 										<tr key={job._id}>
-											<td className='whitespace-nowrap py-4 pr-3 pl-2 md:pl-3 text-sm font-medium text-gray-900'>
+											<td className='whitespace-nowrap py-4 pr-3 pl-3 text-sm font-medium text-gray-900'>
 												{job.company}
 											</td>
 											<td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>

@@ -37,19 +37,19 @@ export default function TasksCard() {
 
 	return (
 		<div className='border border-gray-200 bg-white rounded-lg'>
-			<div className='sm:flex sm:items-center p-2 md:p-4 top-0 z-20'>
+			<div className='sm:flex sm:items-center p-3 top-0 z-20'>
 				<div className='sm:flex-auto'>
 					<h1 className='text-xl md:text-2xl'>Upcoming Tasks</h1>
 				</div>
 			</div>
-			<div className='mt-0 flow-root h-48 md:min-h-52 md:max-h-72 overflow-auto'>
+			<div className='mt-0 flow-root h-48 md:min-h-36 md:max-h-72 overflow-auto'>
 				<div className='inline-block min-w-full align-middle'>
 					<table className='min-w-full divide-y divide-gray-300'>
 						<thead className='sticky top-0 bg-white z-10'>
 							<tr>
 								<th
 									scope='col'
-									className='py-3.5 pr-3 pl-2 md:pl-4 text-left text-sm font-semibold text-gray-900'
+									className='py-3.5 pr-3 pl-3 text-left text-sm font-semibold text-gray-900'
 								>
 									Title
 								</th>
@@ -71,7 +71,7 @@ export default function TasksCard() {
 							{tasks.length > 0 ? (
 								tasks.map((task, index) => (
 									<tr key={index} className='even:bg-gray-50'>
-										<td className='py-4 pr-3 pl-2 md:pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-3'>
+										<td className='py-4 pr-3 pl-3 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-3'>
 											{task.title}
 										</td>
 										<td
@@ -113,18 +113,18 @@ export default function TasksCard() {
 							)}
 						</tbody>
 					</table>
-					<div className='mt-4 col-span-3 flex justify-center w-full'>
-						<Link
-							href='/myTasks'
-							className='rounded-md text-blue-500 px-3 py-2 text-center text-sm font-semibold flex items-center justify-center gap-2 hover:bg-blue-50 hover:text-blue-700 transition-colors'
-						>
-							View All on Tasks Page
-							<span>
-								<ArrowTopRightOnSquareIcon className='h-4 w-4' />
-							</span>
-						</Link>
-					</div>
 				</div>
+			</div>
+			<div className='flex justify-center w-full'>
+				<Link
+					href='/myTasks'
+					className='rounded-md text-blue-500 px-3 py-2 mb-2 text-center text-sm font-semibold flex items-center justify-center hover:bg-blue-50 hover:text-blue-700 transition-colors'
+				>
+					View All on Tasks Page
+					<span>
+						<ArrowTopRightOnSquareIcon className='h-4 w-4' />
+					</span>
+				</Link>
 			</div>
 		</div>
 	);
