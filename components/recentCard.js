@@ -16,22 +16,24 @@ export default function RecentCard() {
 	console.log(recentJobs);
 
 	return (
-		<div className='bg-white rounded-lg'>
-			<div className='sm:flex sm:items-center p-4 top-0 z-20'>
-				<div className='sm:flex-auto'>
-					<h1 className='text-2xl'>Recently Added</h1>
-					<p className='mt-2 text-sm text-gray-700'>Last 7 days</p>
+		<div className='bg-white rounded-lg border border-gray-200 h-full'>
+			<div className='sm:flex sm:items-center top-0 z-20'>
+				<div className='sm:flex-auto pt-3 pl-2 md:pl-3'>
+					<h1 className='text-xl md:text-2xl'>Recently Added</h1>
+					<p className='mt-2 text-xs md:text-sm text-gray-700'>
+						Last 7 days
+					</p>
 				</div>
 			</div>
 
-			<div className='overflow-y-auto h-64'>
+			<div className='overflow-auto h-48 md:h-64 w-full'>
 				<div className='inline-block min-w-full align-middle'>
 					<table className='min-w-full divide-y divide-gray-300'>
 						<thead className='sticky top-0 bg-white z-10'>
 							<tr>
 								<th
 									scope='col'
-									className='py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-4'
+									className='py-3.5 pr-3 pl-2 md:pl-3 text-left text-sm font-semibold text-gray-900'
 								>
 									Company Name
 								</th>
@@ -72,7 +74,7 @@ export default function RecentCard() {
 								) : (
 									recentJobs.map((job) => (
 										<tr key={job._id}>
-											<td className='whitespace-nowrap py-4 pr-3 pl-4 text-sm font-medium text-gray-900 sm:pl-4'>
+											<td className='whitespace-nowrap py-4 pr-3 pl-2 md:pl-3 text-sm font-medium text-gray-900'>
 												{job.company}
 											</td>
 											<td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>

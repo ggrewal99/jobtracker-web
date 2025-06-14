@@ -47,12 +47,14 @@ export default function DashboardLayout({ children }) {
 	}
 	return (
 		<>
-			<div className='flex h-full flex-col mx-auto min-h-screen'>
+			<div className='flex h-full flex-col min-h-screen overflow-x-hidden'>
 				<Modal />
 				<Alert />
 				<Navbar />
 				<Sidebar />
-				<main className='flex-1 p-4'>{children}</main>
+				<main className='flex-1 p-2 md:p-4 bg-gray-100'>
+					{children}
+				</main>
 				<PageFooter />
 			</div>
 		</>

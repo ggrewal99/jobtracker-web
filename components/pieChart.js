@@ -29,8 +29,8 @@ export default function PieChart({ jobCounts }) {
 	console.log('jobCounts', jobCounts);
 
 	return (
-		<div className='w-full h-[300px]'>
-			<h1 className='text-2xl'>Visiual Breakdown</h1>
+		<div className='pb-8 md:pb-0 flex-col justify-center items-center w-full rounded-xl bg-white border border-gray-200'>
+			<h1 className='text-xl md:text-2xl p-3'>Visiual Breakdown</h1>
 			{Object.entries(jobCounts).every(([key, value]) => value === 0) ? (
 				<div className='lg:mt-3 sm:mt-2'>
 					<h1 className='text-gray-500 text-sm'>
@@ -38,7 +38,9 @@ export default function PieChart({ jobCounts }) {
 					</h1>
 				</div>
 			) : (
-				<Pie data={data} options={options} />
+				<div className='h-[300px] md:h-[300px] pb-2'>
+					<Pie data={data} options={options} />
+				</div>
 			)}
 		</div>
 	);

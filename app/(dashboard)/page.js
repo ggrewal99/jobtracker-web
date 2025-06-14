@@ -34,8 +34,8 @@ export default function Dashboard() {
 
 	return (
 		<>
-			<div className='flex min-h-full flex-1 flex-col justify-center px-6 py-10 lg:px-8 mx-auto max-w-7xl'>
-				<h2 className='text-left text-xl font-semibold tracking-tight text-gray-900'>
+			<div className='flex min-h-full flex-1 flex-col justify-center px-0 py-3 lg:px-8 mx-auto max-w-screen'>
+				<h2 className='text-left text-xl font-semibold tracking-tight text-gray-900 mb-2 lg:mb-0'>
 					{!userLoading ? `Welcome, ${user?.firstName}` : ``}
 				</h2>
 				{jobsLoading ? (
@@ -56,8 +56,8 @@ export default function Dashboard() {
 						</svg>
 					</div>
 				) : (
-					<div className='grid sm:grid-cols-1 lg:grid-cols-2 gap-6 md:grid-rows-[auto_1fr] h-fit sm:mt-5 md:mt-12'>
-						<div className='col-span-1 sm:col-span-1 lg:col-span-2 border-b border-gray-300'>
+					<div className='grid sm:grid-cols-1 lg:grid-cols-2 gap-6 md:grid-rows-[auto_1fr] h-fit sm:mt-5 md:mt-12 overflow-x-hidden'>
+						<div className='col-span-1 sm:col-span-1 lg:col-span-2'>
 							<Stats
 								jobCounts={jobCounts}
 								totalJobs={jobs.length}
@@ -66,10 +66,10 @@ export default function Dashboard() {
 						<div className='sm:col-span-1 lg:col-span-1'>
 							<PieChart jobCounts={jobCounts} />
 						</div>
-						<div className='sm:col-span-1 lg:col-span-1'>
+						<div className='sm:col-span-1 lg:col-span-1 overflow-auto'>
 							<RecentCard />
 						</div>
-						<div className='col-span-1 sm:col-span-1 lg:col-span-2'>
+						<div className='col-span-1 sm:col-span-1 lg:col-span-2 overflow-auto'>
 							<TasksCard />
 						</div>
 					</div>
