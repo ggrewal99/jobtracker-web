@@ -56,7 +56,6 @@ export default function NewJob({ exisitingJob }) {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setLoading(true);
-		const formattedDate = new Date(dateApplied);
 		try {
 			if (!exisitingJob) {
 				// Create New Job
@@ -66,7 +65,7 @@ export default function NewJob({ exisitingJob }) {
 						position.charAt(0).toUpperCase() + position.slice(1),
 					company: company.charAt(0).toUpperCase() + company.slice(1),
 					status,
-					dateApplied: formattedDate,
+					dateApplied: new Date(dateApplied),
 					notes,
 				});
 				await getJobs();
@@ -173,7 +172,7 @@ export default function NewJob({ exisitingJob }) {
 									name='date-applied'
 									type='date'
 									required
-									defaultValue={dateApplied}
+									value={dateApplied}
 									onChange={(e) =>
 										setDateApplied(e.target.value)
 									}

@@ -82,11 +82,11 @@ export default function MyJobs() {
 		<>
 			<div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 mx-auto max-w-7xl'>
 				<div className='flex flex-col md:flex-row items-center justify-center md:gap-12 mb-5'>
-					<div className='w-fit mb-5'>
-						<span className='text-sm/6 font-medium text-gray-900'>
-							Refine
+					<div className='w-fit mb-5 bg-white p-2 rounded-lg border border-gray-200'>
+						<span className='text-sm/6 font-semibold text-gray-900'>
+							Refine Search
 						</span>
-						<div className='flex items-center justify-center gap-x-5 bg-gray-100 px-2 py-2 rounded-md'>
+						<div className='flex items-center justify-center gap-x-5 px-2 py-2 rounded-md'>
 							<div className='flex items-center justify-between gap-x-3'>
 								<label
 									htmlFor='filterByStatus'
