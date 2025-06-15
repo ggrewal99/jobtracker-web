@@ -87,7 +87,7 @@ export default function MyJobs() {
 							Refine Search
 						</span>
 						<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 px-2 py-2 rounded-md place-items-center'>
-							<div className='flex items-center gap-x-3 w-full lg:w-fit'>
+							<div className='flex items-center gap-x-3 w-full'>
 								<label
 									htmlFor='filterByStatus'
 									className='block text-sm/6 font-medium text-gray-900'
