@@ -165,7 +165,7 @@ export default function TaskForm({
 			onSubmit={handleSubmit}
 			className='relative lg:w-3xl sm:w-full mx-0 lg:mx-auto'
 		>
-			<div className='rounded-lg bg-white outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-blue-500'>
+			<div className='bg-white rounded-t-lg'>
 				<label htmlFor='title' className='sr-only'>
 					Title
 				</label>
@@ -177,7 +177,7 @@ export default function TaskForm({
 					required
 					defaultValue={title}
 					onChange={(e) => setTitle(e.target.value)}
-					className='block w-full px-3 pt-2.5 text-lg font-semibold text-gray-900 placeholder:text-gray-400 focus:outline-none'
+					className='block w-full px-3 pt-2.5 text-base md:text-lg font-semibold text-gray-900 placeholder:text-gray-400 focus:outline-none'
 				/>
 				<label htmlFor='description' className='sr-only'>
 					Description
@@ -190,26 +190,13 @@ export default function TaskForm({
 					required
 					defaultValue={description}
 					onChange={(e) => setDescription(e.target.value)}
-					className='block w-full resize-none px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6'
+					className='block w-full resize-none px-3 py-1.5 text-sm md:text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6 min-h-24'
 				/>
-
-				{/* Spacer element to match the height of the toolbar */}
-				<div aria-hidden='true'>
-					<div className='py-2'>
-						<div className='h-9' />
-					</div>
-					<div className='h-px' />
-					<div className='py-2'>
-						<div className='py-px'>
-							<div className='h-9' />
-						</div>
-					</div>
-				</div>
 			</div>
 
-			<div className='absolute inset-x-px bottom-0'>
-				<div className='flex flex-nowrap justify-end space-x-2 px-2 py-2 sm:px-3'>
-					<div className='relative flex items-end'>
+			<div className=' bg-white rounded-b-lg'>
+				<div className='flex flex-col md:flex-row items-start md:justify-end w-full flex-nowrap space-x-2 px-2 py-2 sm:px-3'>
+					<div className='relative flex items-end w-full md:w-fit'>
 						<label htmlFor='taskType' className='sr-only'>
 							Task type
 						</label>
@@ -220,7 +207,7 @@ export default function TaskForm({
 							onChange={(e) => setTaskType(e.target.value)}
 							title='Task type'
 							required
-							className='w-full appearance-none rounded-md bg-white py-1.5 pr-10 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6 invalid:text-gray-500'
+							className='appearance-none w-full md:w-fit rounded-md bg-white py-1.5 pr-10 pl-3 mb-2 md:mb-0 text-sm text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6 invalid:text-gray-500'
 						>
 							<option value='select' disabled>
 								Select task type
@@ -233,7 +220,7 @@ export default function TaskForm({
 						</select>
 						<ChevronDownIcon
 							aria-hidden='true'
-							className='pointer-events-none absolute right-3 top-1/2 -translate-y-1/4 size-5 text-gray-500 sm:size-4'
+							className='pointer-events-none absolute right-3 top-1/4 md:top-2/5 -translate-y-1/4 size-5 text-gray-500 sm:size-4'
 						/>
 					</div>
 					<div className='relative shrink-0 flex items-end'>
@@ -246,7 +233,7 @@ export default function TaskForm({
 							customInput={
 								<button
 									type='button'
-									className='relative inline-flex items-center rounded-full bg-gray-50 px-2 py-2 text-sm font-medium whitespace-nowrap text-gray-500 hover:bg-gray-100 sm:px-3'
+									className='relative inline-flex items-center rounded-lg bg-gray-50 px-2 py-2 text-sm font-medium whitespace-nowrap text-gray-500 hover:bg-gray-100 sm:px-3'
 								>
 									<CalendarIcon
 										aria-hidden='true'
@@ -260,7 +247,7 @@ export default function TaskForm({
 									<span
 										className={classNames(
 											selectedDate ? 'text-gray-900' : '',
-											'hidden truncate sm:ml-2 sm:block'
+											'sm:ml-2 sm:block'
 										)}
 									>
 										{displayDate}
@@ -274,7 +261,7 @@ export default function TaskForm({
 							minDate={today}
 						/>
 					</div>
-					<div>
+					<div className='w-full md:w-fit'>
 						<TimeCombobox
 							time={selectedTime}
 							setTime={setSelectedTime}
@@ -282,7 +269,7 @@ export default function TaskForm({
 						/>
 					</div>
 				</div>
-				<div className='flex items-center justify-end space-x-3 border-t border-gray-200 px-2 py-2 sm:px-3'>
+				<div className='flex items-center justify-end space-x-3 px-2 py-2 sm:px-3'>
 					<div className='shrink-0 flex gap-2'>
 						{selectedTask && (
 							<button

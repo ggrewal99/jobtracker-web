@@ -120,9 +120,9 @@ export default function TimeCombobox({ time, setTime, initialTime }) {
 			<Label className='block text-sm/6 font-medium text-gray-900 sr-only'>
 				Select Time
 			</Label>
-			<div className='relative mt-2'>
+			<div className='relative mt-2 md:mt-0'>
 				<ComboboxInput
-					className='block w-full rounded-md bg-white py-1.5 pr-12 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
+					className='block w-full text-sm rounded-md bg-white py-1.5 pr-12 pl-3 text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
 					onChange={handleInputChange}
 					onBlur={() => setQuery('')}
 					displayValue={(time) => time?.name || ''}
@@ -136,7 +136,7 @@ export default function TimeCombobox({ time, setTime, initialTime }) {
 				</ComboboxButton>
 
 				{filteredTimes.length > 0 && (
-					<ComboboxOptions className='absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-hidden sm:text-sm'>
+					<ComboboxOptions className='absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black/5 focus:outline-hidden sm:text-sm'>
 						{filteredTimes.map((time) => (
 							<ComboboxOption
 								key={time.id}

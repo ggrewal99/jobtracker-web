@@ -80,21 +80,21 @@ export default function MyJobs() {
 
 	return (
 		<>
-			<div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 mx-auto max-w-7xl'>
-				<div className='flex flex-col md:flex-row items-center justify-center md:gap-12 mb-5'>
-					<div className='w-fit mb-5 bg-white p-2 rounded-lg border border-gray-200'>
-						<span className='text-sm/6 font-semibold text-gray-900'>
+			<div className='flex min-h-full flex-1 flex-col justify-center px-3 py-6 md:px-6 md:py-12 lg:px-8 mx-auto max-w-7xl'>
+				<div className='flex flex-col md:flex-row items-center justify-center md:gap-0 mb-5'>
+					<div className='mb-5 bg-white p-3 rounded-lg border border-gray-200 w-full'>
+						<span className='text-sm/6 font-semibold text-gray-900 w-fit'>
 							Refine Search
 						</span>
-						<div className='flex items-center justify-center gap-x-5 px-2 py-2 rounded-md'>
-							<div className='flex items-center justify-between gap-x-3'>
+						<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 px-2 py-2 rounded-md place-items-center'>
+							<div className='flex items-center gap-x-3 w-full lg:w-fit'>
 								<label
 									htmlFor='filterByStatus'
 									className='block text-sm/6 font-medium text-gray-900'
 								>
 									Status
 								</label>
-								<div className='grid grid-cols-1'>
+								<div className='grid grid-cols-1 w-full'>
 									<select
 										id='filterByStatus'
 										name='filterByStatus'
@@ -115,11 +115,11 @@ export default function MyJobs() {
 									/>
 								</div>
 							</div>
-							<div className='flex items-center justify-between gap-x-3'>
+							<div className='flex flex-col md:flex-row items-start md:items-center gap-x-3 w-full lg:w-fit'>
 								<label className='block text-sm/6 font-medium text-gray-900'>
 									Date Applied
 								</label>
-								<div className='flex flex-col md:flex-row gap-x-2 items-center'>
+								<div className='flex flex-row flex-1 gap-x-2 items-center justify-start w-full'>
 									<div className='relative shrink-0'>
 										<DatePicker
 											selected={minDateApplied}
@@ -129,7 +129,7 @@ export default function MyJobs() {
 											customInput={
 												<button
 													type='button'
-													className='relative inline-flex items-center rounded-full bg-gray-50 px-2 py-2 text-sm font-medium whitespace-nowrap text-gray-500 hover:bg-gray-100 sm:px-3'
+													className='relative flex gap-2 items-center justify-center rounded-lg bg-gray-50 px-2 py-2 text-sm font-medium whitespace-nowrap text-gray-500 hover:bg-gray-100 sm:px-3 w-full'
 												>
 													<CalendarIcon
 														aria-hidden='true'
@@ -145,7 +145,7 @@ export default function MyJobs() {
 															minDateApplied
 																? 'text-gray-900'
 																: '',
-															'hidden truncate sm:ml-2 sm:block'
+															'sm:ml-2'
 														)}
 													>
 														{displayMinDate}
@@ -170,7 +170,7 @@ export default function MyJobs() {
 											customInput={
 												<button
 													type='button'
-													className='relative inline-flex items-center rounded-full bg-gray-50 px-2 py-2 text-sm font-medium whitespace-nowrap text-gray-500 hover:bg-gray-100 sm:px-3'
+													className='relative inline-flex gap-2 items-center rounded-lg bg-gray-50 px-2 py-2 text-sm font-medium whitespace-nowrap text-gray-500 hover:bg-gray-100 sm:px-3 w-full'
 												>
 													<CalendarIcon
 														aria-hidden='true'
@@ -186,7 +186,7 @@ export default function MyJobs() {
 															maxDateApplied
 																? 'text-gray-900'
 																: '',
-															'hidden truncate sm:ml-2 sm:block'
+															'sm:ml-2 sm:block'
 														)}
 													>
 														{displayMaxDate}
@@ -201,15 +201,15 @@ export default function MyJobs() {
 									</div>
 								</div>
 							</div>
-							<div className='flex items-center justify-between gap-x-3'>
+							<div className='flex flex-col md:flex-row items-start md:items-center min-w-full gap-x-3'>
 								<label
 									htmlFor='search'
-									className='block text-sm/6 font-medium text-gray-900 items-center'
+									className='w-fit text-sm/6 font-medium text-gray-900'
 								>
 									Quick search
 								</label>
-								<div className=''>
-									<div className='flex rounded-md bg-white outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-blue-500'>
+								<div className='flex-1 w-full'>
+									<div className='flex rounded-md bg-white outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-blue-500 w-full'>
 										<input
 											id='search'
 											name='search'

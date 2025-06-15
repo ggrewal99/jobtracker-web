@@ -80,7 +80,7 @@ export default function NewJob({ exisitingJob }) {
 						company:
 							company.charAt(0).toUpperCase() + company.slice(1),
 						status,
-						dateApplied,
+						dateApplied: new Date(dateApplied),
 						notes,
 					},
 					exisitingJob._id
