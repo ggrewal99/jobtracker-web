@@ -14,7 +14,7 @@ import { updateTask } from '@/lib/api';
 import useAlert from '@/hooks/useAlert';
 import useModal from '@/hooks/useModal';
 import useJobs from '@/hooks/useJobs';
-import { format } from 'date-fns';
+import { format, isValid } from 'date-fns';
 import { deleteMultipleJobs, deleteMultipleTasks } from '@/lib/api';
 
 export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
@@ -205,10 +205,14 @@ export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 											{item.position}
 										</p>
 										<p className='text-xs text-gray-500'>
-											{format(
-												item.dateApplied,
-												'dd MMM yyyy'
-											)}
+											{isValid(new Date(item.dateApplied))
+												? format(
+														new Date(
+															item.dateApplied
+														),
+														'dd MMM yyyy'
+												  )
+												: 'Invalid date'}
 										</p>
 									</div>
 								</div>
