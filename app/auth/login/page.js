@@ -3,6 +3,7 @@ import { useState } from 'react';
 import useAuth from '../../../hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import Logo from '@/components/logo';
+import ServerNotice from '@/components/serverNotice';
 
 export default function Login() {
 	const [email, setEmail] = useState('');
@@ -28,6 +29,7 @@ export default function Login() {
 	};
 	return (
 		<>
+			{loading && <ServerNotice />}
 			<div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
 				<div className='sm:mx-auto sm:w-full sm:max-w-sm'>
 					<Logo />
