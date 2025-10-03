@@ -135,9 +135,14 @@ export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 					<p className='text-gray-500'>Nothing here yet.</p>
 				</div>
 			)}
-
-			{selectedItems.length > 0 && (
-				<div className='static md:absolute -top-15 right-2 flex items-center justify-start md:justify-end mb-4 gap-2'>
+			<div
+				className={`transition-all duration-300 ease-in-out ${
+					selectedItems.length > 0
+						? 'max-h-20 opacity-100 mb-4'
+						: 'max-h-0 opacity-0 mb-0'
+				}`}
+			>
+				<div className='flex items-center justify-end gap-2 py-2 overflow-visible'>
 					<div className='text-sm text-gray-500'>
 						{selectedItems.length} item(s) selected
 					</div>
@@ -145,28 +150,28 @@ export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 						<div className='relative group'>
 							<button
 								onClick={handleDeleteSelected}
-								className='px-4 py-2 text-white bg-red-500 hover:bg-red-400 rounded cursor-pointer'
+								className='px-4 py-2 text-white bg-red-500 hover:bg-red-400 rounded cursor-pointer transition-colors duration-200'
 							>
 								<TrashIcon className='h-5 w-5' />
 							</button>
-							<span className='absolute bottom-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap'>
+							<span className='absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50'>
 								Delete selected
 							</span>
 						</div>
 						<div className='relative group'>
 							<button
 								onClick={() => setSelectedItems([])}
-								className='px-4 py-2 text-white bg-gray-500 hover:bg-gray-400 rounded cursor-pointer'
+								className='px-4 py-2 text-white bg-gray-500 hover:bg-gray-400 rounded cursor-pointer transition-colors duration-200'
 							>
 								<XMarkIcon className='h-5 w-5' />
 							</button>
-							<span className='absolute bottom-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap'>
+							<span className='absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50'>
 								Clear selection
 							</span>
 						</div>
 					</div>
 				</div>
-			)}
+			</div>
 
 			<div className='grid grid-cols-1 gap-4 md:grid-cols-4 cursor-pointer'>
 				{visibleItems.map((item) => (

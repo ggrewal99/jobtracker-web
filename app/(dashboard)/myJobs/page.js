@@ -116,7 +116,7 @@ export default function MyJobs() {
 								</div>
 							</div>
 							<div className='flex flex-col md:flex-row items-start md:items-center gap-x-3 w-full lg:w-fit'>
-								<label className='block text-sm/6 font-medium text-gray-900'>
+								<label className='block text-sm/6 font-medium text-gray-100'>
 									Date Applied
 								</label>
 								<div className='flex flex-row flex-1 gap-x-2 items-center justify-start w-full'>
