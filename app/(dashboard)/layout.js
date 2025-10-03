@@ -52,7 +52,7 @@ export default function DashboardLayout({ children }) {
 				<Alert />
 				<Navbar />
 				<Sidebar />
-				<main className='flex-1 p-2 md:p-4 bg-gray-100'>
+				<main className='flex-1 p-2 md:p-4 bg-gray-900'>
 					{children}
 				</main>
 				<PageFooter />

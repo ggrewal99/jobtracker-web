@@ -82,15 +82,15 @@ export default function MyJobs() {
 		<>
 			<div className='flex min-h-full flex-1 flex-col justify-center px-3 py-6 md:px-6 md:py-12 lg:px-8 mx-auto max-w-7xl'>
 				<div className='flex flex-col md:flex-row items-center justify-center md:gap-0 mb-5'>
-					<div className='mb-5 bg-white p-3 rounded-lg border border-gray-200 w-full'>
-						<span className='text-sm/6 font-semibold text-gray-900 w-fit'>
+					<div className='mb-5 bg-gray-800 p-3 rounded-lg border border-gray-600 w-full'>
+						<span className='text-sm/6 font-semibold text-gray-100 w-fit'>
 							Refine Search
 						</span>
 						<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 px-2 py-2 rounded-md place-items-center'>
 							<div className='flex items-center gap-x-3 w-full'>
 								<label
 									htmlFor='filterByStatus'
-									className='block text-sm/6 font-medium text-gray-900'
+									className='block text-sm/6 font-medium text-gray-100'
 								>
 									Status
 								</label>
@@ -100,7 +100,7 @@ export default function MyJobs() {
 										name='filterByStatus'
 										value={filterByStatus}
 										onChange={handleStatusChange}
-										className='col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-xs text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
+										className='col-start-1 row-start-1 w-full appearance-none rounded-md bg-gray-700 py-1.5 pr-8 pl-3 text-xs text-gray-100 outline-1 -outline-offset-1 outline-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
 									>
 										<option value='All'>All</option>
 										{Object.keys(statuses).map((key) => (
@@ -129,21 +129,21 @@ export default function MyJobs() {
 											customInput={
 												<button
 													type='button'
-													className='relative flex gap-2 items-center justify-center rounded-lg bg-gray-50 px-2 py-2 text-sm font-medium whitespace-nowrap text-gray-500 hover:bg-gray-100 sm:px-3 w-full'
+													className='relative flex gap-2 items-center justify-center rounded-lg bg-gray-700 px-2 py-2 text-sm font-medium whitespace-nowrap text-gray-300 hover:bg-gray-600 sm:px-3 w-full'
 												>
 													<CalendarIcon
 														aria-hidden='true'
 														className={classNames(
 															minDateApplied
-																? 'text-gray-500'
-																: 'text-gray-300',
+																? 'text-gray-300'
+																: 'text-gray-500',
 															'size-5 shrink-0 sm:-ml-1'
 														)}
 													/>
 													<span
 														className={classNames(
 															minDateApplied
-																? 'text-gray-900'
+																? 'text-gray-100'
 																: '',
 															'sm:ml-2'
 														)}
@@ -158,7 +158,7 @@ export default function MyJobs() {
 											placeholderText='Select min date'
 										/>
 									</div>
-									<span className='text-sm/6 font-medium text-gray-900'>
+									<span className='text-sm/6 font-medium text-gray-100'>
 										to
 									</span>
 									<div className='relative shrink-0'>
@@ -170,21 +170,21 @@ export default function MyJobs() {
 											customInput={
 												<button
 													type='button'
-													className='relative inline-flex gap-2 items-center rounded-lg bg-gray-50 px-2 py-2 text-sm font-medium whitespace-nowrap text-gray-500 hover:bg-gray-100 sm:px-3 w-full'
+													className='relative inline-flex gap-2 items-center rounded-lg bg-gray-700 px-2 py-2 text-sm font-medium whitespace-nowrap text-gray-300 hover:bg-gray-600 sm:px-3 w-full'
 												>
 													<CalendarIcon
 														aria-hidden='true'
 														className={classNames(
 															maxDateApplied
-																? 'text-gray-500'
-																: 'text-gray-300',
+																? 'text-gray-300'
+																: 'text-gray-500',
 															'size-5 shrink-0 sm:-ml-1'
 														)}
 													/>
 													<span
 														className={classNames(
 															maxDateApplied
-																? 'text-gray-900'
+																? 'text-gray-100'
 																: '',
 															'sm:ml-2 sm:block'
 														)}
@@ -204,22 +204,22 @@ export default function MyJobs() {
 							<div className='flex flex-col md:flex-row items-start md:items-center min-w-full gap-x-3'>
 								<label
 									htmlFor='search'
-									className='w-fit text-sm/6 font-medium text-gray-900'
+									className='w-fit text-sm/6 font-medium text-gray-100'
 								>
 									Quick search
 								</label>
 								<div className='flex-1 w-full'>
-									<div className='flex rounded-md bg-white outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-blue-500 w-full'>
+									<div className='flex rounded-md bg-gray-700 outline-1 -outline-offset-1 outline-gray-500 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-blue-500 w-full'>
 										<input
 											id='search'
 											name='search'
 											type='text'
 											value={searchQuery}
 											onChange={handleSearchChange}
-											className='block grow px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6'
+											className='block grow px-3 py-1.5 text-base text-gray-100 placeholder:text-gray-400 focus:outline-none sm:text-sm/6'
 										/>
 										<div className='flex py-1.5 pr-1.5'>
-											<kbd className='inline-flex items-center rounded-sm border border-gray-200 px-1 font-sans text-xs text-gray-400'>
+											<kbd className='inline-flex items-center rounded-sm border border-gray-500 px-1 font-sans text-xs text-gray-400'>
 												⌘K
 											</kbd>
 										</div>
@@ -234,12 +234,12 @@ export default function MyJobs() {
 								<>
 									<button
 										type='button'
-										className='rounded-md bg-gray-100 px-2 py-1 text-sm text-gray-700 font-semibold cursor-pointer'
+										className='rounded-md bg-gray-600 px-2 py-1 text-sm text-gray-200 font-semibold cursor-pointer'
 										onClick={handleClearFilters}
 									>
 										Clear Filters
 									</button>
-									<p className='text-sm/6 font-medium text-gray-500 ms-2'>
+									<p className='text-sm/6 font-medium text-gray-300 ms-2'>
 										Applied Filters:
 									</p>
 								</>
@@ -250,7 +250,7 @@ export default function MyJobs() {
 									onClick={handleClearStatusFilter}
 								>
 									<span
-										className='inline-flex items-center rounded-md bg-gray-100 px-2 py-1 text-sm font-medium text-gray-700 cursor-pointer'
+										className='inline-flex items-center rounded-md bg-gray-600 px-2 py-1 text-sm font-medium text-gray-200 cursor-pointer'
 										onClick={handleClearStatusFilter}
 									>
 										{statuses[filterByStatus].displayName}
@@ -265,7 +265,7 @@ export default function MyJobs() {
 									className='flex items-center gap-x-2 relative cursor-pointer'
 									onClick={() => setMinDateApplied(null)}
 								>
-									<span className='inline-flex items-center rounded-md bg-gray-100 px-2 py-1 text-sm font-medium text-gray-700'>
+									<span className='inline-flex items-center rounded-md bg-gray-600 px-2 py-1 text-sm font-medium text-gray-200'>
 										From {displayMinDate}
 									</span>
 									<span className='absolute -top-1.5 -right-2 text-xs font-semibold text-gray-500'>
@@ -278,7 +278,7 @@ export default function MyJobs() {
 									className='flex items-center gap-x-2 relative cursor-pointer'
 									onClick={() => setMaxDateApplied(null)}
 								>
-									<span className='inline-flex items-center rounded-md bg-gray-100 px-2 py-1 text-sm font-medium text-gray-700'>
+									<span className='inline-flex items-center rounded-md bg-gray-600 px-2 py-1 text-sm font-medium text-gray-200'>
 										To {displayMaxDate}
 									</span>
 									<span className='absolute -top-1.5 -right-2 text-xs font-semibold text-gray-500'>

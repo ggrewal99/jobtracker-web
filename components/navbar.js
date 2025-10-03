@@ -43,13 +43,13 @@ export default function Navbar() {
 	};
 
 	return (
-		<Disclosure as='nav' className='bg-white shadow-lg rounded-lg'>
+		<Disclosure as='nav' className='bg-gray-800 shadow-lg rounded-lg'>
 			<div className='mx-auto max-w-7xl px-2 md:px-8'>
 				<div className='flex h-16 justify-between'>
 					<div className='flex'>
 						<div className='mr-2 -ml-2 flex items-center md:hidden'>
 							{/* Mobile menu button */}
-							<DisclosureButton className='group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:ring-2 focus:ring-blue-400 focus:outline-hidden focus:ring-inset'>
+							<DisclosureButton className='group relative inline-flex items-center justify-center rounded-md p-2 text-gray-300 hover:bg-gray-700 hover:text-gray-200 focus:ring-2 focus:ring-blue-400 focus:outline-hidden focus:ring-inset'>
 								<span className='absolute -inset-0.5' />
 								<span className='sr-only'>Open main menu</span>
 								<Bars3Icon
@@ -70,11 +70,11 @@ export default function Navbar() {
 								<a
 									key={link.name}
 									href={link.href}
-									className={`inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium text-gray-900 
+									className={`inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium text-gray-100 
 										${
 											pathname === link.href
-												? 'border-blue-500'
-												: 'border-transparent hover:border-gray-300 hover:text-gray-700'
+												? 'border-blue-400'
+												: 'border-transparent hover:border-gray-500 hover:text-gray-300'
 										}`}
 								>
 									{link.name}
@@ -100,7 +100,7 @@ export default function Navbar() {
 							{/* Profile dropdown */}
 							<Menu as='div' className='relative ml-3'>
 								<div>
-									<MenuButton className='relative flex rounded-full bg-white text-sm focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:outline-hidden hover:cursor-pointer'>
+									<MenuButton className='relative flex rounded-full bg-gray-700 text-sm focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:outline-hidden hover:cursor-pointer'>
 										<span className='absolute -inset-1.5' />
 										<span className='sr-only'>
 											Open user menu
@@ -123,12 +123,12 @@ export default function Navbar() {
 								</div>
 								<MenuItems
 									transition
-									className='absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 ring-1 shadow-lg ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-75 data-leave:ease-in'
+									className='absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-gray-700 py-1 ring-1 shadow-lg ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-75 data-leave:ease-in'
 								>
 									<MenuItem>
 										<a
 											href='/profile'
-											className='block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden'
+											className='block px-4 py-2 text-sm text-gray-200 data-focus:bg-gray-600 data-focus:outline-hidden'
 										>
 											Your Profile
 										</a>
@@ -136,7 +136,7 @@ export default function Navbar() {
 									<MenuItem>
 										<button
 											onClick={onSignout}
-											className=' w-full text-left px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden cursor-pointer'
+											className=' w-full text-left px-4 py-2 text-sm text-gray-200 data-focus:bg-gray-600 data-focus:outline-hidden cursor-pointer'
 										>
 											Sign out
 										</button>
@@ -157,15 +157,15 @@ export default function Navbar() {
 							href={link.href}
 							className={`block border-l-4 py-2 pr-4 pl-3 text-base font-medium sm:pr-6 sm:pl-5 ${
 								pathname === link.href
-									? 'border-blue-400 bg-blue-50 text-blue-600'
-									: 'border-transparent text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700'
+									? 'border-blue-400 bg-blue-900 text-blue-300'
+									: 'border-transparent text-gray-300 hover:border-gray-500 hover:bg-gray-700 hover:text-gray-100'
 							}`}
 						>
 							{link.name}
 						</DisclosureButton>
 					))}
 				</div>
-				<div className='border-t border-gray-200 pt-4 pb-3'>
+				<div className='border-t border-gray-600 pt-4 pb-3'>
 					<div className='flex items-center px-4 sm:px-6'>
 						<div className='shrink-0 hover:cursor-pointer'>
 							<svg
@@ -186,10 +186,10 @@ export default function Navbar() {
 						<div className='ml-3'>
 							{user && (
 								<>
-									<div className='text-base font-medium text-gray-800'>
+									<div className='text-base font-medium text-gray-200'>
 										{user.firstName} {user.lastName}
 									</div>
-									<div className='text-sm font-medium text-gray-500'>
+									<div className='text-sm font-medium text-gray-400'>
 										{user.email}
 									</div>
 								</>
@@ -200,14 +200,14 @@ export default function Navbar() {
 						<DisclosureButton
 							as='a'
 							href='/profile'
-							className='block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6'
+							className='block px-4 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-gray-100 sm:px-6'
 						>
 							Your Profile
 						</DisclosureButton>
 						<DisclosureButton
 							as='a'
 							onClick={onSignout}
-							className='block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6'
+							className='block px-4 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-gray-100 sm:px-6'
 						>
 							Sign out
 						</DisclosureButton>

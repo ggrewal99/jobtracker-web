@@ -173,7 +173,7 @@ export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 					<div
 						key={item._id}
 						onClick={() => handleItemClick(item)}
-						className={`relative select-none flex items-start space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-xs hover:border-gray-500 group ${
+						className={`relative select-none flex items-start space-x-3 rounded-lg border border-gray-600 bg-gray-800 px-6 py-5 shadow-xs hover:border-gray-500 group ${
 							selectedItems.includes(item._id)
 								? 'border-black ring-2 ring-black'
 								: ''
@@ -198,7 +198,7 @@ export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 							<>
 								<div className='min-w-0 flex-1'>
 									<div>
-										<p className='text-sm font-bold text-gray-900'>
+										<p className='text-sm font-bold text-gray-100'>
 											{item.company}
 										</p>
 										<p className='text-sm text-gray-500'>
@@ -235,20 +235,20 @@ export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 											: ''
 									}`}
 								>
-									<p className='text-sm font-bold text-gray-900'>
+									<p className='text-sm font-bold text-gray-100'>
 										{item.title}
 									</p>
-									<p className='text-sm text-gray-900 text-ellipsis overflow-hidden whitespace-nowrap'>
+									<p className='text-sm text-gray-100 text-ellipsis overflow-hidden whitespace-nowrap'>
 										{item.notes}
 									</p>
 									<div className='flex justify-between'>
 										<div
-											className={`text-xs mt-1 flex border border-gray-200 rounded-md p-1 bg-gray-100 w-fit ${
+											className={`text-xs mt-1 flex border border-gray-500 rounded-md p-1 bg-gray-700 w-fit ${
 												new Date(item.dueDateTime) <
 													new Date() &&
 												!item.completed
 													? 'text-red-500'
-													: 'text-gray-700'
+													: 'text-gray-300'
 											}`}
 											onClick={() =>
 												handleItemClick(item)

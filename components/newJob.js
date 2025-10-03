@@ -121,7 +121,7 @@ export default function NewJob({ exisitingJob }) {
 						<div className='sm:col-span-full'>
 							<label
 								htmlFor='position'
-								className='block text-sm/6 font-medium text-gray-900'
+								className='block text-sm/6 font-medium text-gray-100'
 							>
 								Position
 							</label>
@@ -135,7 +135,7 @@ export default function NewJob({ exisitingJob }) {
 									onChange={(e) =>
 										setPosition(e.target.value)
 									}
-									className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
+									className='block w-full rounded-md bg-gray-700 px-3 py-1.5 text-base text-gray-100 outline-1 -outline-offset-1 outline-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
 								/>
 							</div>
 						</div>
@@ -143,7 +143,7 @@ export default function NewJob({ exisitingJob }) {
 						<div className='sm:col-span-full'>
 							<label
 								htmlFor='company'
-								className='block text-sm/6 font-medium text-gray-900'
+								className='block text-sm/6 font-medium text-gray-100'
 							>
 								Company Name
 							</label>
@@ -155,14 +155,14 @@ export default function NewJob({ exisitingJob }) {
 									required
 									defaultValue={company}
 									onChange={(e) => setCompany(e.target.value)}
-									className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
+									className='block w-full rounded-md bg-gray-700 px-3 py-1.5 text-base text-gray-100 outline-1 -outline-offset-1 outline-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
 								/>
 							</div>
 						</div>
 						<div className='sm:col-span-full'>
 							<label
 								htmlFor='date-applied'
-								className='block text-sm/6 font-medium text-gray-900'
+								className='block text-sm/6 font-medium text-gray-100'
 							>
 								Date Applied
 							</label>
@@ -176,14 +176,14 @@ export default function NewJob({ exisitingJob }) {
 									onChange={(e) =>
 										setDateApplied(e.target.value)
 									}
-									className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
+									className='block w-full rounded-md bg-gray-700 px-3 py-1.5 text-base text-gray-100 outline-1 -outline-offset-1 outline-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
 								/>
 							</div>
 						</div>
 						<div className='sm:col-span-full'>
 							<label
 								htmlFor='status'
-								className='block text-sm/6 font-medium text-gray-900'
+								className='block text-sm/6 font-medium text-gray-100'
 							>
 								Status
 							</label>
@@ -193,7 +193,7 @@ export default function NewJob({ exisitingJob }) {
 									name='status'
 									defaultValue={status}
 									onChange={(e) => setStatus(e.target.value)}
-									className='col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
+									className='col-start-1 row-start-1 w-full appearance-none rounded-md bg-gray-700 py-1.5 pr-8 pl-3 text-base text-gray-100 outline-1 -outline-offset-1 outline-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
 								>
 									{Object.keys(statuses).map((key) => (
 										<option
@@ -213,7 +213,7 @@ export default function NewJob({ exisitingJob }) {
 						<div className='col-span-full'>
 							<label
 								htmlFor='about'
-								className='block text-sm/6 font-medium text-gray-900'
+								className='block text-sm/6 font-medium text-gray-100'
 							>
 								Notes
 							</label>
@@ -224,7 +224,7 @@ export default function NewJob({ exisitingJob }) {
 									rows={3}
 									defaultValue={notes}
 									onChange={(e) => setNotes(e.target.value)}
-									className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
+									className='block w-full rounded-md bg-gray-700 px-3 py-1.5 text-base text-gray-100 outline-1 -outline-offset-1 outline-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
 								/>
 							</div>
 						</div>
@@ -245,7 +245,7 @@ export default function NewJob({ exisitingJob }) {
 					<div>
 						<button
 							type='button'
-							className='text-sm/6 font-semibold text-gray-900 cursor-pointer mr-5'
+							className='text-sm/6 font-semibold text-gray-100 cursor-pointer mr-5'
 							onClick={() => setSidebarOpen(false)}
 						>
 							Cancel

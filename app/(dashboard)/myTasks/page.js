@@ -64,7 +64,7 @@ export default function MyTasks() {
 							value={currentTab}
 							onChange={(e) => handleTabChange(e.target.value)}
 							aria-label='Select a tab'
-							className='col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-2 pr-8 pl-3 text-sm text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500'
+							className='col-start-1 row-start-1 w-full appearance-none rounded-md bg-gray-700 py-2 pr-8 pl-3 text-sm text-gray-100 outline-1 -outline-offset-1 outline-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500'
 						>
 							{tabs.map((tab) => (
 								<option key={tab.name} value={tab.name}>
@@ -88,8 +88,8 @@ export default function MyTasks() {
 									}
 									className={classNames(
 										tab.current
-											? 'bg-blue-100 text-blue-600'
-											: 'text-gray-500 hover:text-gray-700',
+											? 'bg-blue-600 text-blue-100'
+											: 'text-gray-300 hover:text-gray-100',
 										'rounded-md px-3 py-2 text-sm font-medium cursor-pointer'
 									)}
 								>
