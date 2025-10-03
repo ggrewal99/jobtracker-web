@@ -36,42 +36,47 @@ export default function TasksCard() {
 	}, []);
 
 	return (
-		<div className='border border-gray-200 bg-white rounded-lg'>
+		<div className='border border-gray-600 bg-gray-800 rounded-lg'>
 			<div className='sm:flex sm:items-center p-3 top-0 z-20'>
 				<div className='sm:flex-auto'>
-					<h1 className='text-xl md:text-2xl'>Upcoming Tasks</h1>
+					<h1 className='text-xl md:text-2xl text-gray-100'>
+						Upcoming Tasks
+					</h1>
 				</div>
 			</div>
 			<div className='mt-0 flow-root h-48 md:min-h-36 md:max-h-72 overflow-auto'>
 				<div className='inline-block min-w-full align-middle'>
-					<table className='min-w-full divide-y divide-gray-300'>
-						<thead className='sticky top-0 bg-white z-10'>
+					<table className='min-w-full divide-y divide-gray-600'>
+						<thead className='sticky top-0 bg-gray-800 z-10'>
 							<tr>
 								<th
 									scope='col'
-									className='py-3.5 pr-3 pl-3 text-left text-sm font-semibold text-gray-900'
+									className='py-3.5 pr-3 pl-3 text-left text-sm font-semibold text-gray-100'
 								>
 									Title
 								</th>
 								<th
 									scope='col'
-									className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
+									className='px-3 py-3.5 text-left text-sm font-semibold text-gray-100'
 								>
 									Due
 								</th>
 								<th
 									scope='col'
-									className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
+									className='px-3 py-3.5 text-left text-sm font-semibold text-gray-100'
 								>
 									Type
 								</th>
 							</tr>
 						</thead>
-						<tbody className='bg-white'>
+						<tbody className='bg-gray-800'>
 							{tasks.length > 0 ? (
 								tasks.map((task, index) => (
-									<tr key={index} className='even:bg-gray-50'>
-										<td className='py-4 pr-3 pl-3 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-3'>
+									<tr
+										key={index}
+										className='even:bg-gray-700'
+									>
+										<td className='py-4 pr-3 pl-3 text-sm font-medium whitespace-nowrap text-gray-100 sm:pl-3'>
 											{task.title}
 										</td>
 										<td
@@ -79,8 +84,8 @@ export default function TasksCard() {
 												new Date(task.dueDateTime) <=
 													new Date() &&
 												!task.completed
-													? 'text-red-500'
-													: 'text-gray-500'
+													? 'text-red-400'
+													: 'text-gray-300'
 											}`}
 										>
 											{task.dueDateTime &&
@@ -93,7 +98,7 @@ export default function TasksCard() {
 												  )
 												: 'No due date'}
 										</td>
-										<td className='px-3 py-4 text-sm whitespace-nowrap text-gray-500'>
+										<td className='px-3 py-4 text-sm whitespace-nowrap text-gray-300'>
 											{
 												taskTypes[task.taskType]
 													.displayName
@@ -105,7 +110,7 @@ export default function TasksCard() {
 								<tr>
 									<td
 										colSpan='3'
-										className='py-4 pr-3 pl-4 text-sm text-center whitespace-nowrap text-gray-500 sm:pl-3'
+										className='py-4 pr-3 pl-4 text-sm text-center whitespace-nowrap text-gray-300 sm:pl-3'
 									>
 										No incomplete tasks found.
 									</td>
@@ -118,7 +123,7 @@ export default function TasksCard() {
 			<div className='flex justify-center w-full'>
 				<Link
 					href='/myTasks'
-					className='rounded-md text-blue-500 px-3 py-2 mb-2 text-center text-sm font-semibold flex items-center justify-center hover:bg-blue-50 hover:text-blue-700 transition-colors'
+					className='rounded-md text-blue-400 px-3 py-2 mb-2 text-center text-sm font-semibold flex items-center justify-center hover:bg-blue-900 hover:text-blue-300 transition-colors'
 				>
 					View All on Tasks Page
 					<span>

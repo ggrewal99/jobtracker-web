@@ -165,7 +165,7 @@ export default function TaskForm({
 			onSubmit={handleSubmit}
 			className='relative lg:w-3xl sm:w-full mx-0 lg:mx-auto'
 		>
-			<div className='bg-white rounded-t-lg'>
+			<div className='bg-gray-800 rounded-t-lg'>
 				<label htmlFor='title' className='sr-only'>
 					Title
 				</label>
@@ -177,7 +177,7 @@ export default function TaskForm({
 					required
 					defaultValue={title}
 					onChange={(e) => setTitle(e.target.value)}
-					className='block w-full px-3 pt-2.5 text-base md:text-lg font-semibold text-gray-900 placeholder:text-gray-400 focus:outline-none'
+					className='block w-full px-3 pt-2.5 text-base md:text-lg font-semibold text-gray-100 placeholder:text-gray-400 focus:outline-none'
 				/>
 				<label htmlFor='description' className='sr-only'>
 					Description
@@ -190,11 +190,11 @@ export default function TaskForm({
 					required
 					defaultValue={description}
 					onChange={(e) => setDescription(e.target.value)}
-					className='block w-full resize-none px-3 py-1.5 text-sm md:text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6 min-h-24'
+					className='block w-full resize-none px-3 py-1.5 text-sm md:text-base text-gray-100 placeholder:text-gray-400 focus:outline-none sm:text-sm/6 min-h-24'
 				/>
 			</div>
 
-			<div className=' bg-white rounded-b-lg'>
+			<div className=' bg-gray-800 rounded-b-lg'>
 				<div className='flex flex-col md:flex-row items-start md:justify-end w-full flex-nowrap space-x-2 px-2 py-2 sm:px-3'>
 					<div className='relative flex items-end w-full md:w-fit'>
 						<label htmlFor='taskType' className='sr-only'>
@@ -207,7 +207,7 @@ export default function TaskForm({
 							onChange={(e) => setTaskType(e.target.value)}
 							title='Task type'
 							required
-							className='appearance-none w-full md:w-fit rounded-md bg-white py-1.5 pr-10 pl-3 mb-2 md:mb-0 text-sm text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6 invalid:text-gray-500'
+							className='appearance-none w-full md:w-fit rounded-md bg-gray-700 py-1.5 pr-10 pl-3 mb-2 md:mb-0 text-sm text-gray-100 outline-1 -outline-offset-1 outline-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6 invalid:text-gray-500'
 						>
 							<option value='select' disabled>
 								Select task type
@@ -233,20 +233,20 @@ export default function TaskForm({
 							customInput={
 								<button
 									type='button'
-									className='relative inline-flex items-center rounded-lg bg-gray-50 px-2 py-2 text-sm font-medium whitespace-nowrap text-gray-500 hover:bg-gray-100 sm:px-3'
+									className='relative inline-flex items-center rounded-lg bg-gray-700 px-2 py-2 text-sm font-medium whitespace-nowrap text-gray-300 hover:bg-gray-600 sm:px-3'
 								>
 									<CalendarIcon
 										aria-hidden='true'
 										className={classNames(
 											selectedDate
-												? 'text-gray-500'
-												: 'text-gray-300',
+												? 'text-gray-300'
+												: 'text-gray-500',
 											'size-5 shrink-0 sm:-ml-1'
 										)}
 									/>
 									<span
 										className={classNames(
-											selectedDate ? 'text-gray-900' : '',
+											selectedDate ? 'text-gray-100' : '',
 											'sm:ml-2 sm:block'
 										)}
 									>

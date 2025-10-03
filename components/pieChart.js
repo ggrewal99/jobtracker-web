@@ -29,11 +29,13 @@ export default function PieChart({ jobCounts }) {
 	console.log('jobCounts', jobCounts);
 
 	return (
-		<div className='pb-8 md:pb-0 flex-col justify-center items-center w-full rounded-xl bg-white border border-gray-200'>
-			<h1 className='text-xl md:text-2xl p-3'>Visiual Breakdown</h1>
+		<div className='pb-8 md:pb-0 flex-col justify-center items-center w-full rounded-xl bg-gray-800 border border-gray-600'>
+			<h1 className='text-xl md:text-2xl p-3 text-gray-100'>
+				Visiual Breakdown
+			</h1>
 			{Object.entries(jobCounts).every(([key, value]) => value === 0) ? (
 				<div className='lg:mt-3 sm:mt-2'>
-					<h1 className='text-gray-500 text-sm'>
+					<h1 className='text-gray-300 text-sm'>
 						Add more Jobs to see data here.
 					</h1>
 				</div>

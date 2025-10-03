@@ -44,7 +44,7 @@ export default function Register() {
 			<div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
 				<div className='sm:mx-auto sm:w-full sm:max-w-sm'>
 					<Logo />
-					<h2 className='mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900'>
+					<h2 className='mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-100'>
 						Sign up for an account
 					</h2>
 				</div>
@@ -54,7 +54,7 @@ export default function Register() {
 						<div>
 							<label
 								htmlFor='firstName'
-								className='block text-sm/6 font-medium text-gray-900'
+								className='block text-sm/6 font-medium text-gray-100'
 							>
 								First Name
 							</label>
@@ -68,7 +68,7 @@ export default function Register() {
 										setFirstName(e.target.value)
 									}
 									value={firstName}
-									className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
+									className='block w-full rounded-md bg-gray-700 px-3 py-1.5 text-base text-gray-100 outline-1 -outline-offset-1 outline-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
 								/>
 							</div>
 						</div>
@@ -76,7 +76,7 @@ export default function Register() {
 						<div>
 							<label
 								htmlFor='email'
-								className='block text-sm/6 font-medium text-gray-900'
+								className='block text-sm/6 font-medium text-gray-100'
 							>
 								Last Name (Optional)
 							</label>
@@ -89,7 +89,7 @@ export default function Register() {
 										setLastName(e.target.value)
 									}
 									value={lastName}
-									className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
+									className='block w-full rounded-md bg-gray-700 px-3 py-1.5 text-base text-gray-100 outline-1 -outline-offset-1 outline-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
 								/>
 							</div>
 						</div>
@@ -97,7 +97,7 @@ export default function Register() {
 						<div>
 							<label
 								htmlFor='email'
-								className='block text-sm/6 font-medium text-gray-900'
+								className='block text-sm/6 font-medium text-gray-100'
 							>
 								Email address
 							</label>
@@ -110,7 +110,7 @@ export default function Register() {
 									autoComplete='email'
 									onChange={(e) => setEmail(e.target.value)}
 									value={email}
-									className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
+									className='block w-full rounded-md bg-gray-700 px-3 py-1.5 text-base text-gray-100 outline-1 -outline-offset-1 outline-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
 								/>
 							</div>
 						</div>
@@ -119,7 +119,7 @@ export default function Register() {
 							<div className='flex items-center justify-between'>
 								<label
 									htmlFor='password'
-									className='block text-sm/6 font-medium text-gray-900'
+									className='block text-sm/6 font-medium text-gray-100'
 								>
 									Password
 								</label>
@@ -134,7 +134,7 @@ export default function Register() {
 										setPassword(e.target.value)
 									}
 									value={password}
-									className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
+									className='block w-full rounded-md bg-gray-700 px-3 py-1.5 text-base text-gray-100 outline-1 -outline-offset-1 outline-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
 								/>
 							</div>
 						</div>
@@ -142,7 +142,7 @@ export default function Register() {
 							<div className='flex items-center justify-between'>
 								<label
 									htmlFor='confirm-password'
-									className='block text-sm/6 font-medium text-gray-900'
+									className='block text-sm/6 font-medium text-gray-100'
 								>
 									Confirm Password
 								</label>
@@ -157,7 +157,7 @@ export default function Register() {
 										setConfirmPassword(e.target.value)
 									}
 									value={confirmPassword}
-									className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
+									className='block w-full rounded-md bg-gray-700 px-3 py-1.5 text-base text-gray-100 outline-1 -outline-offset-1 outline-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-500 sm:text-sm/6'
 								/>
 							</div>
 						</div>

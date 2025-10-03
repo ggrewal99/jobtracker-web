@@ -35,13 +35,13 @@ export default function Dashboard() {
 	return (
 		<>
 			<div className='flex min-h-full flex-1 flex-col justify-center px-0 py-3 lg:px-8 mx-auto max-w-screen'>
-				<h2 className='text-left text-xl font-semibold tracking-tight text-gray-900 mb-2 lg:mb-0'>
+				<h2 className='text-left text-xl font-semibold tracking-tight text-gray-100 mb-2 lg:mb-0'>
 					{!userLoading ? `Welcome, ${user?.firstName}` : ``}
 				</h2>
 				{jobsLoading ? (
 					<div className='flex items-center justify-center h-screen'>
 						<svg
-							className='animate-spin h-10 w-10 text-gray-500'
+							className='animate-spin h-10 w-10 text-gray-300'
 							xmlns='http://www.w3.org/2000/svg'
 							viewBox='0 0 24 24'
 						>
