@@ -5,13 +5,14 @@ const noticeStyle = {
 	position: 'fixed',
 	bottom: '30px',
 	right: '30px',
-	background: '#fffbe6',
-	border: '1px solid #ffe58f',
+	background: '#1f2937', // bg-gray-800
+	border: '1px solid #4b5563', // border-gray-600
 	borderRadius: '8px',
 	padding: '16px 24px',
-	boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+	boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
 	zIndex: 1000,
 	fontSize: '16px',
+	color: '#f3f4f6', // text-gray-100
 };
 
 export default function ServerNotice() {
