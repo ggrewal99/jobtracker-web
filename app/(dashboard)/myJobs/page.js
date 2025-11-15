@@ -1,27 +1,107 @@
 'use client';
 
 import GridList from '@/components/gridList';
-import { useState } from 'react';
-import useJobs from '@/hooks/useJobs';
+import { useState, useEffect, useCallback } from 'react';
+import { getJobs } from '@/lib/api';
 import statuses from '@/constants/jobStatus';
 import { ChevronDownIcon, CalendarIcon } from '@heroicons/react/20/solid';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { format, startOfDay, isValid } from 'date-fns';
 import { XCircleIcon } from '@heroicons/react/24/solid';
+import useAuth from '@/hooks/useAuth';
 
 function classNames(...classes) {
 	return classes.filter(Boolean).join(' ');
 }
 
 export default function MyJobs() {
-	const { jobs } = useJobs();
+	const { user, userLoading } = useAuth();
+	const [jobs, setJobs] = useState([]);
+	const [pagination, setPagination] = useState(null);
+	const [jobsLoading, setJobsLoading] = useState(true);
 	const [searchQuery, setSearchQuery] = useState('');
+	const [debouncedSearch, setDebouncedSearch] = useState('');
 	const [minDateApplied, setMinDateApplied] = useState(null);
 	const [maxDateApplied, setMaxDateApplied] = useState(null);
 	const [filterByStatus, setFilterByStatus] = useState('All');
+	const [currentPage, setCurrentPage] = useState(1);
+	const [sortBy, setSortBy] = useState('dateApplied');
+	const [sortOrder, setSortOrder] = useState('desc');
+	const limit = 20;
 
-	const today = startOfDay(new Date()); // Normalize to start of day (June 1, 2025, 00:00 AEST)
+	// Debounce search input
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			setDebouncedSearch(searchQuery);
+			setCurrentPage(1); // Reset to page 1 when search changes
+		}, 500);
+
+		return () => clearTimeout(timer);
+	}, [searchQuery]);
+
+	// Fetch jobs when filters change
+	const fetchJobs = useCallback(async () => {
+		if (userLoading || !user) return;
+
+		try {
+			setJobsLoading(true);
+			const params = {
+				page: currentPage,
+				limit,
+				sortBy,
+				sortOrder,
+				search: debouncedSearch || undefined,
+				status: filterByStatus !== 'All' ? filterByStatus : undefined,
+			};
+
+			const data = await getJobs(params);
+			setJobs(data.jobs);
+			setPagination(data.pagination);
+		} catch (error) {
+			console.error('Failed to fetch jobs:', error);
+		} finally {
+			setJobsLoading(false);
+		}
+	}, [user, userLoading, currentPage, sortBy, sortOrder, debouncedSearch, filterByStatus]);
+
+	useEffect(() => {
+		fetchJobs();
+	}, [fetchJobs]);
+
+	// Listen for global job updates (e.g., when created from navbar)
+	useEffect(() => {
+		const handleJobsUpdated = () => {
+			fetchJobs();
+		};
+
+		if (typeof window !== 'undefined') {
+			window.addEventListener('jobsUpdated', handleJobsUpdated);
+		}
+
+		return () => {
+			if (typeof window !== 'undefined') {
+				window.removeEventListener('jobsUpdated', handleJobsUpdated);
+			}
+		};
+	}, [fetchJobs]);
+
+	// Client-side date filtering (since API doesn't support date ranges yet)
+	const filteredJobs = jobs.filter((job) => {
+		const jobDate = job.dateApplied ? new Date(job.dateApplied) : null;
+		if (!jobDate || !isValid(jobDate)) {
+			return true; // Include job if no date filters are applied
+		}
+
+		const matchesMinDate = minDateApplied
+			? startOfDay(jobDate) >= startOfDay(minDateApplied)
+			: true;
+		const matchesMaxDate = maxDateApplied
+			? startOfDay(jobDate) <= startOfDay(maxDateApplied)
+			: true;
+
+		return matchesMinDate && matchesMaxDate;
+	});
 
 	const displayMinDate =
 		minDateApplied && isValid(minDateApplied)
@@ -33,31 +113,10 @@ export default function MyJobs() {
 			? format(maxDateApplied, 'MMM dd, yyyy')
 			: 'Max date';
 
-	const filteredJobs = jobs.filter((job) => {
-		const matchesSearch =
-			job.position.toLowerCase().includes(searchQuery.toLowerCase()) ||
-			job.company.toLowerCase().includes(searchQuery.toLowerCase());
-
-		const matchesStatus =
-			filterByStatus === 'All' || job.status === filterByStatus;
-
-		const jobDate = job.dateApplied ? new Date(job.dateApplied) : null;
-		if (!jobDate || !isValid(jobDate)) {
-			console.warn(`Invalid or missing dateApplied for job:`, job);
-			return matchesSearch && matchesStatus; // Include job if no date filters are applied
-		}
-
-		const matchesMinDate = minDateApplied
-			? startOfDay(jobDate) >= startOfDay(minDateApplied)
-			: true;
-		const matchesMaxDate = maxDateApplied
-			? startOfDay(jobDate) <= startOfDay(maxDateApplied)
-			: true;
-
-		return (
-			matchesSearch && matchesStatus && matchesMinDate && matchesMaxDate
-		);
-	});
+	// Refresh jobs after mutations
+	const handleRefresh = useCallback(() => {
+		fetchJobs();
+	}, [fetchJobs]);
 
 	const handleSearchChange = (e) => {
 		setSearchQuery(e.target.value);
@@ -65,18 +124,28 @@ export default function MyJobs() {
 
 	const handleStatusChange = (e) => {
 		setFilterByStatus(e.target.value);
+		setCurrentPage(1); // Reset to page 1 when status changes
+	};
+
+	const handlePageChange = (newPage) => {
+		setCurrentPage(newPage);
+		// Scroll to top when page changes
+		window.scrollTo({ top: 0, behavior: 'smooth' });
 	};
 
 	const handleClearFilters = () => {
 		setSearchQuery('');
+		setDebouncedSearch('');
 		setMinDateApplied(null);
 		setMaxDateApplied(null);
 		setFilterByStatus('All');
+		setCurrentPage(1);
 	};
 
 	const handleClearStatusFilter = () => {
 		setFilterByStatus('All');
 	};
+
 
 	return (
 		<>
@@ -286,10 +355,95 @@ export default function MyJobs() {
 									</span>
 								</button>
 							)}
+
+							{searchQuery !== '' && (
+								<p className='text-sm/6 font-medium text-gray-300 ms-2'>
+									Search results for: {searchQuery}
+								</p>
+							)}
 						</div>
 					</div>
 				</div>
-				<GridList items={filteredJobs} itemType='job' />
+				{jobsLoading ? (
+					<div className='flex items-center justify-center py-12'>
+						<svg
+							className='animate-spin h-10 w-10 text-gray-300'
+							xmlns='http://www.w3.org/2000/svg'
+							viewBox='0 0 24 24'
+						>
+							<path
+								fill='none'
+								d='M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16z'
+							/>
+							<path
+								fill='currentColor'
+								d='M12.5 6.5a1.5 1.5 0 1 1-3 .001A7.5 7.5 0 1 0 12.5 6.5z'
+							/>
+						</svg>
+					</div>
+				) : (
+					<>
+						<GridList 
+							items={filteredJobs} 
+							itemType='job' 
+							onRefresh={handleRefresh}
+						/>
+						
+						{/* Pagination Controls */}
+						{pagination && pagination.totalPages > 1 && (
+							<div className='mt-6 flex flex-col sm:flex-row items-center justify-center gap-4'>
+								<div className='flex gap-2'>
+									<button
+										onClick={() => handlePageChange(currentPage - 1)}
+										disabled={!pagination.hasPreviousPage}
+										className='px-4 py-2 rounded-md bg-gray-700 text-gray-100 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-600 transition-colors cursor-pointer'
+									>
+										Previous
+									</button>
+									<div className='flex items-center gap-1'>
+										{Array.from({ length: pagination.totalPages }, (_, i) => i + 1)
+											.filter(page => {
+												// Show first page, last page, current page, and pages around current
+												return (
+													page === 1 ||
+													page === pagination.totalPages ||
+													(page >= currentPage - 1 && page <= currentPage + 1)
+												);
+											})
+											.map((page, index, array) => {
+												// Add ellipsis if there's a gap
+												const showEllipsisBefore = index > 0 && array[index - 1] !== page - 1;
+												return (
+													<div key={page} className='flex items-center gap-1'>
+														{showEllipsisBefore && (
+															<span className='px-2 text-gray-400'>...</span>
+														)}
+														<button
+															onClick={() => handlePageChange(page)}
+															className={`px-3 py-2 rounded-md transition-colors cursor-pointer ${
+																currentPage === page
+																	? 'bg-blue-500 text-white'
+																	: 'bg-gray-700 text-gray-100 hover:bg-gray-600'
+															}`}
+														>
+															{page}
+														</button>
+													</div>
+												);
+											})}
+									</div>
+									<button
+										onClick={() => handlePageChange(currentPage + 1)}
+										disabled={!pagination.hasNextPage}
+										className='px-4 py-2 rounded-md bg-gray-700 text-gray-100 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-600 transition-colors cursor-pointer'
+									>
+										Next
+									</button>
+								</div>
+							</div>
+						)}
+					</>
+				)}
 			</div>
 		</>
 	);

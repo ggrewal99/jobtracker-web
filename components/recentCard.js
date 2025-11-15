@@ -1,19 +1,11 @@
 'use client';
-import useJobs from '@/hooks/useJobs';
 import statuses from '@/constants/jobStatus';
 import { Loading } from './loading';
 import { format, isValid } from 'date-fns';
 
-export default function RecentCard() {
-	const { jobs, jobsLoading } = useJobs();
-	const recentJobs = jobs.filter((job) => {
-		const date = new Date(job.createdAt);
-		const today = new Date();
-		const diffTime = Math.abs(today - date);
-		const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-		return diffDays <= 7;
-	});
-	console.log(recentJobs);
+export default function RecentCard({ recentApplications }) {
+
+	console.log('recentApplications', recentApplications);
 
 	return (
 		<div className='bg-gray-800 rounded-lg border border-gray-600 h-full'>
@@ -60,11 +52,9 @@ export default function RecentCard() {
 							</tr>
 						</thead>
 
-						{jobsLoading ? (
-							<Loading />
-						) : (
+						
 							<tbody className='divide-y divide-gray-200'>
-								{recentJobs.length === 0 ? (
+								{recentApplications.length === 0 ? (
 									<tr>
 										<td
 											colSpan={4}
@@ -74,27 +64,27 @@ export default function RecentCard() {
 										</td>
 									</tr>
 								) : (
-									recentJobs.map((job) => (
-										<tr key={job._id}>
-											<td className='whitespace-nowrap py-4 pr-3 pl-3 text-sm font-medium text-gray-900'>
-												{job.company}
+									recentApplications.map((application) => (
+										<tr key={application._id}>
+											<td className='whitespace-nowrap py-4 pr-3 pl-3 text-sm font-medium text-gray-100'>
+												{application.company}
 											</td>
-											<td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-												{job.position}
+											<td className='whitespace-nowrap px-3 py-4 text-sm text-gray-100'>
+												{application.position}
 											</td>
-											<td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+											<td className='whitespace-nowrap px-3 py-4 text-sm text-gray-100'>
 												{
-													statuses[job.status]
+													statuses[application.status]
 														.displayName
 												}
 											</td>
-											<td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+											<td className='whitespace-nowrap px-3 py-4 text-sm text-gray-100'>
 												{isValid(
-													new Date(job.dateApplied)
+													new Date(application.dateApplied)
 												)
 													? format(
 															new Date(
-																job.dateApplied
+																application.dateApplied
 															),
 															'dd MMM yyyy'
 													  )
@@ -104,7 +94,7 @@ export default function RecentCard() {
 									))
 								)}
 							</tbody>
-						)}
+						
 					</table>
 				</div>
 			</div>

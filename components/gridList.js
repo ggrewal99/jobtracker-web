@@ -13,22 +13,23 @@ import TaskModal from './taskModal';
 import { updateTask } from '@/lib/api';
 import useAlert from '@/hooks/useAlert';
 import useModal from '@/hooks/useModal';
-import useJobs from '@/hooks/useJobs';
 import { format, isValid } from 'date-fns';
 import { deleteMultipleJobs, deleteMultipleTasks } from '@/lib/api';
 
-export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
+export default function GridList({ items: allItems, itemType, onTaskUpdated, onRefresh }) {
 	// itemType = 'job' | 'task'
+	// onRefresh: callback to refresh data after mutations (for jobs)
+
+	const limit = 20; // move this to contants 
 
 	const [visibleItems, setVisibleItems] = useState([]);
-	const [displayCount, setDisplayCount] = useState(9);
+	const [displayCount, setDisplayCount] = useState(limit);
 	const [selectedTask, setSelectedTask] = useState(null);
 	const [selectedItems, setSelectedItems] = useState([]);
 	const [openTaskModal, setOpenTaskModal] = useState(false);
 	const { setSidebarOpen, setSidebarContent, setSidebarTitle } = useSidebar();
 	const { setShowAlert, setAlertMessage, setAlertType } = useAlert();
 	const { setShowModal, setModalContent } = useModal();
-	const { removeMultipleJobs } = useJobs();
 
 	useEffect(() => {
 		// Show initial set of items
@@ -44,7 +45,7 @@ export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 		if (itemType == 'job') {
 			setSidebarOpen(true);
 			setSidebarTitle('Edit Job');
-			setSidebarContent(<NewJob exisitingJob={item} />);
+			setSidebarContent(<NewJob exisitingJob={item} onRefresh={onRefresh} />);
 		} else if (itemType == 'task') {
 			setSelectedTask(item);
 			setOpenTaskModal(true);
@@ -52,7 +53,7 @@ export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 	};
 
 	const loadMore = () => {
-		const newDisplayCount = displayCount + 9;
+		const newDisplayCount = displayCount + limit;
 		setDisplayCount(newDisplayCount);
 		setVisibleItems(allItems.slice(0, newDisplayCount));
 	};
@@ -73,8 +74,10 @@ export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 				}.`
 			);
 			setAlertType('success');
-			const updatedTask = { ...item, completed: true };
-			onTaskUpdated(updatedTask);
+			const updatedTask = { ...item, completed: isItemCompleted };
+			if (onTaskUpdated) {
+				onTaskUpdated(updatedTask);
+			}
 		} catch (error) {
 			console.error('Error updating task:', error);
 			setShowAlert(true);
@@ -94,21 +97,24 @@ export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 	};
 
 	const handleDeleteSelected = () => {
-		// Implement delete functionality here
 		setShowModal(true);
 		setModalContent({
 			title: 'Delete Selected',
 			message: `Are you sure you want to delete ${selectedItems.length} selected item(s)?`,
 			btnText: 'Delete Selected',
 			onConfirm: async () => {
-				// Implement delete functionality here
 				try {
 					if (itemType === 'job') {
 						await deleteMultipleJobs(selectedItems);
-						removeMultipleJobs(selectedItems);
+						// Refresh jobs list if callback provided
+						if (onRefresh) {
+							onRefresh();
+						}
 					} else if (itemType === 'task') {
 						await deleteMultipleTasks(selectedItems);
-						onTaskUpdated();
+						if (onTaskUpdated) {
+							onTaskUpdated();
+						}
 					}
 					setShowAlert(true);
 					setAlertMessage('Selected items deleted successfully!');
@@ -130,11 +136,11 @@ export default function GridList({ items: allItems, itemType, onTaskUpdated }) {
 
 	return (
 		<div className='space-y-6 relative overflow-visible'>
-			{allItems.length === 0 ?? (
+			{allItems.length === 0 ? (
 				<div className='flex items-center justify-center'>
 					<p className='text-gray-500'>Nothing here yet.</p>
 				</div>
-			)}
+			) : null}
 			<div
 				className={`transition-all duration-300 ease-in-out ${
 					selectedItems.length > 0

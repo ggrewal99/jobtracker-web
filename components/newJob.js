@@ -10,8 +10,7 @@ import {
 import useAlert from '@/hooks/useAlert';
 import useSidebar from '@/hooks/useSidebar';
 import useModal from '@/hooks/useModal';
-import useJobs from '@/hooks/useJobs';
-export default function NewJob({ exisitingJob }) {
+export default function NewJob({ exisitingJob, onRefresh }) {
 	const [position, setPosition] = useState(exisitingJob?.position || '');
 	const [company, setCompany] = useState(exisitingJob?.company || '');
 	const [status, setStatus] = useState(
@@ -27,7 +26,7 @@ export default function NewJob({ exisitingJob }) {
 	const [loading, setLoading] = useState(false);
 	const { setShowAlert, setAlertMessage, setAlertType } = useAlert();
 	const { setShowModal, setModalContent } = useModal();
-	const { updateJob, removeJob, getJobs } = useJobs();
+	const { setSidebarContent } = useSidebar();
 
 	const handleDelete = async () => {
 		setShowModal(true);
@@ -40,9 +39,12 @@ export default function NewJob({ exisitingJob }) {
 					await apiDeleteJob(exisitingJob._id);
 					setAlertMessage('Job deleted successfully!');
 					setAlertType('success');
-					removeJob(exisitingJob._id);
 					setShowAlert(true);
 					setSidebarOpen(false);
+					// Refresh jobs list if callback provided
+					if (onRefresh) {
+						onRefresh();
+					}
 				} catch (error) {
 					console.error('Something went wrong.', error);
 					setAlertMessage('Failed to delete job.');
@@ -68,8 +70,16 @@ export default function NewJob({ exisitingJob }) {
 					dateApplied: new Date(dateApplied),
 					notes,
 				});
-				await getJobs();
 				setAlertMessage('Job created successfully!');
+				// Refresh jobs list if callback provided
+				if (onRefresh) {
+					onRefresh();
+				}
+				setSidebarOpen(false);
+				// Dispatch custom event for global refresh (e.g., when created from navbar)
+				if (typeof window !== 'undefined') {
+					window.dispatchEvent(new CustomEvent('jobsUpdated'));
+				}
 			} else {
 				// Update Existing Job
 				await apiUpdateJob(
@@ -85,16 +95,16 @@ export default function NewJob({ exisitingJob }) {
 					},
 					exisitingJob._id
 				);
-				updateJob({
-					position:
-						position.charAt(0).toUpperCase() + position.slice(1),
-					company: company.charAt(0).toUpperCase() + company.slice(1),
-					status,
-					dateApplied,
-					notes,
-					_id: exisitingJob._id,
-				});
 				setAlertMessage('Job updated successfully!');
+				// Refresh jobs list if callback provided
+				if (onRefresh) {
+					onRefresh();
+				}
+				setSidebarOpen(false);
+				// Dispatch custom event for global refresh
+				if (typeof window !== 'undefined') {
+					window.dispatchEvent(new CustomEvent('jobsUpdated'));
+				}
 			}
 
 			setAlertType('success');

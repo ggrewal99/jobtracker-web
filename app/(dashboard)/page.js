@@ -4,33 +4,46 @@ import PieChart from '@/components/pieChart';
 import RecentCard from '@/components/recentCard';
 import Stats from '@/components/stats';
 import useAuth from '@/hooks/useAuth';
-import useJobs from '@/hooks/useJobs';
 import { useEffect, useState } from 'react';
-import statuses from '@/constants/jobStatus';
 import TasksCard from '@/components/tasksCard';
-
+import { getAuthHeaders } from '@/lib/api';
 export default function Dashboard() {
 	const { user, userLoading } = useAuth();
-	const { jobs, jobsLoading } = useJobs();
-	const initialJobCounts = Object.keys(statuses).reduce((acc, key) => {
-		acc[key] = 0;
-		return acc;
-	}, {});
-
-	const [jobCounts, setJobCounts] = useState(initialJobCounts);
+	const [analytics, setAnalytics] = useState(null);
+	const [analyticsLoading, setAnalyticsLoading] = useState(true);
+	const [error, setError] = useState(null);
 
 	useEffect(() => {
-		if (jobs && jobs.length > 0) {
-			const newJobCounts = {};
-			for (const key in statuses) {
-				newJobCounts[key] = jobs.filter(
-					(job) => job.status === key
-				).length;
-			}
+		const fetchDashboardAnalytics = async () => {
+			try {
+				setAnalyticsLoading(true);
+				const token = localStorage.getItem('token'); // Adjust based on your auth storage
+				
+				const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/analytics/dashboard`, {
+					headers: getAuthHeaders(),
+				});
 
-			setJobCounts(newJobCounts);
-		}
-	}, [jobs]);
+				if (!response.ok) {
+					throw new Error('Failed to fetch dashboard analytics');
+				}
+
+				const result = await response.json();
+				
+				if (result.success) {
+					setAnalytics(result.data);
+				} else {
+					throw new Error(result.message || 'Failed to fetch analytics');
+				}
+			} catch (err) {
+				setError(err.message || 'An error occurred');
+				console.error('Error fetching dashboard analytics:', err);
+			} finally {
+				setAnalyticsLoading(false);
+			}
+		};
+
+		fetchDashboardAnalytics();
+	}, []);
 
 	return (
 		<>
@@ -38,7 +51,8 @@ export default function Dashboard() {
 				<h2 className='text-left text-xl font-semibold tracking-tight text-gray-100 mb-2 lg:mb-0'>
 					{!userLoading ? `Welcome, ${user?.firstName}` : ``}
 				</h2>
-				{jobsLoading ? (
+				
+				{analyticsLoading || userLoading ? (
 					<div className='flex items-center justify-center h-screen'>
 						<svg
 							className='animate-spin h-10 w-10 text-gray-300'
@@ -55,25 +69,29 @@ export default function Dashboard() {
 							/>
 						</svg>
 					</div>
-				) : (
+				) : error ? (
+					<div className='flex items-center justify-center h-screen'>
+						<p className='text-red-500'>Error: {error}</p>
+					</div>
+				) : analytics ? (
 					<div className='grid sm:grid-cols-1 lg:grid-cols-2 gap-6 md:grid-rows-[auto_1fr] h-fit sm:mt-5 md:mt-12 overflow-x-hidden'>
 						<div className='col-span-1 sm:col-span-1 lg:col-span-2'>
 							<Stats
-								jobCounts={jobCounts}
-								totalJobs={jobs.length}
+								stats={analytics.byStatus}
+								totalJobs={analytics.totalApplications}
 							/>
 						</div>
 						<div className='sm:col-span-1 lg:col-span-1'>
-							<PieChart jobCounts={jobCounts} />
+							<PieChart stats={analytics.byStatus} />
 						</div>
 						<div className='sm:col-span-1 lg:col-span-1 overflow-auto'>
-							<RecentCard />
+							<RecentCard recentApplications={analytics.recentApplications} />
 						</div>
 						<div className='col-span-1 sm:col-span-1 lg:col-span-2 overflow-auto'>
-							<TasksCard />
+							<TasksCard upcomingTasks={analytics.upcomingTasks} />
 						</div>
 					</div>
-				)}
+				) : null}
 			</div>
 		</>
 	);

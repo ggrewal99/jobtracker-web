@@ -10,7 +10,7 @@ import {
 	LinkIcon,
 } from '@heroicons/react/24/outline';
 
-export default function TasksCard() {
+export default function TasksCard({ upcomingTasks }) {
 	const [tasks, setTasks] = useState([]);
 
 	const fetchTasks = async () => {
@@ -24,16 +24,26 @@ export default function TasksCard() {
 	};
 
 	useEffect(() => {
-		const loadTasks = async () => {
-			const tasks = await fetchTasks();
+		// If upcomingTasks prop is provided, use it directly
+		if (upcomingTasks) {
 			// Filter for non-completed tasks and limit to 6
-			const nonCompletedTasks = tasks
+			const nonCompletedTasks = upcomingTasks
 				.filter((task) => !task.completed)
 				.slice(0, 6);
 			setTasks(nonCompletedTasks);
-		};
-		loadTasks();
-	}, []);
+		} else {
+			// Otherwise, fetch tasks internally (backward compatibility)
+			const loadTasks = async () => {
+				const tasks = await fetchTasks();
+				// Filter for non-completed tasks and limit to 6
+				const nonCompletedTasks = tasks
+					.filter((task) => !task.completed)
+					.slice(0, 6);
+				setTasks(nonCompletedTasks);
+			};
+			loadTasks();
+		}
+	}, [upcomingTasks]);
 
 	return (
 		<div className='border border-gray-600 bg-gray-800 rounded-lg'>
