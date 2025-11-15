@@ -14,6 +14,8 @@ export default function VerifyEmailPage() {
 			setSuccess(true);
 		} catch (error) {
 			console.error('Email verification failed:', error);
+			setSuccess(false);
+			setError(error.response.data.message);
 		}
 	};
 	useEffect(() => {

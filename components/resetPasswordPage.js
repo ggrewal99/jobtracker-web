@@ -31,7 +31,7 @@ export default function ResetPasswordPage() {
 			setMessage('Password reset successful.');
 		} catch (error) {
 			setError(true);
-			setMessage('Password reset failed');
+			setMessage(error.response.data.message);
 		}
 		setLoading(false);
 	};

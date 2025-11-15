@@ -34,7 +34,7 @@ export default function Register() {
 			);
 		} catch (error) {
 			setError(true);
-			setMessage('Registration failed');
+			setMessage(error.response.data.message);
 		}
 		setLoading(false);
 	};
