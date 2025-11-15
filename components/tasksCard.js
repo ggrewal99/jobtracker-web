@@ -50,7 +50,7 @@ export default function TasksCard({ upcomingTasks }) {
 			<div className='sm:flex sm:items-center p-3 top-0 z-20'>
 				<div className='sm:flex-auto'>
 					<h1 className='text-xl md:text-2xl text-gray-100'>
-						Upcoming Tasks
+						Upcoming Tasks (Next 7 days)
 					</h1>
 				</div>
 			</div>
